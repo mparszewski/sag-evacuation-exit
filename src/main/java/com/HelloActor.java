@@ -1,11 +1,11 @@
 package com;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
-import akka.actor.Props;
+import akka.actor.typed.Behavior;
 import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
+import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
+import com.messages.HelloMessage;
 
 public class HelloActor extends AbstractBehavior<HelloMessage>
 {
@@ -20,24 +20,12 @@ public class HelloActor extends AbstractBehavior<HelloMessage>
                 .build();
     }
 
-    public HelloActor printMessage(HelloMessage message) {
-        System.out.println( "My message is: " +  message.getMessage() );
-        return this;
+    public static Behavior<HelloMessage> create() {
+        return Behaviors.setup(HelloActor::new);
     }
 
-    public static void main( String[] args )
-    {
-        ActorSystem actorSystem = ActorSystem.create( "MySystem" );
-        ActorRef actorRef = actorSystem.actorOf( Props.create( HelloActor.class ), "myActor" );
-        actorRef.tell( new HelloMessage( "Hello, Akka!" ), actorRef );
-
-        try
-        {
-            Thread.sleep( 1000 );
-        }
-        catch( Exception e ) {}
-
-        actorSystem.stop( actorRef );
-        actorSystem.terminate();
+    public HelloActor printMessage(HelloMessage message) {
+        System.out.println( "Hello from actor " );
+        return this;
     }
 }
