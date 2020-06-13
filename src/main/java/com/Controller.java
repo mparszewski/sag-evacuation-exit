@@ -35,9 +35,8 @@ public class Controller extends AbstractBehavior<ControllerMessage> {
     }
 
     public Controller createHelloActor(CreateActor createActor) {
-        ActorRef<HelloMessage> newHelloActor = getContext().spawn(
-                HelloActor.create(),
-                "actor"
+        ActorRef<HelloMessage> newHelloActor = getContext().spawnAnonymous(
+                HelloActor.create()
         );
         listOfHelloActors.add(newHelloActor);
         return this;
