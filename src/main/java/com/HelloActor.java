@@ -3,16 +3,26 @@ package com;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.actor.UntypedAbstractActor;
+import akka.actor.typed.javadsl.AbstractBehavior;
+import akka.actor.typed.javadsl.ActorContext;
+import akka.actor.typed.javadsl.Receive;
 
-public class HelloActor extends UntypedAbstractActor
+public class HelloActor extends AbstractBehavior<HelloMessage>
 {
-    public void onReceive(Object message)
-    {
-        if( message instanceof HelloMessage)
-        {
-            System.out.println( "My message is: " + ( (HelloMessage)message ).getMessage() );
-        }
+    public HelloActor(ActorContext<HelloMessage> context) {
+        super(context);
+    }
+
+    @Override
+    public Receive<HelloMessage> createReceive() {
+        return newReceiveBuilder()
+                .onMessage(HelloMessage.class, this::printMessage)
+                .build();
+    }
+
+    public HelloActor printMessage(HelloMessage message) {
+        System.out.println( "My message is: " +  message.getMessage() );
+        return this;
     }
 
     public static void main( String[] args )
