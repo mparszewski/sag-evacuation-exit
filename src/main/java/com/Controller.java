@@ -40,7 +40,7 @@ public class Controller extends AbstractBehavior<ControllerMessage> {
 
     public Controller createHumanActor(CreateActor createActor) {
         ActorRef<HelloMessage> humanActor = getContext().spawnAnonymous(
-                HumanActor.create(humanConfigGenerator.generateHumanConfig(new Point(0,0)))
+                HumanActor.create(humanConfigGenerator.generateHumanConfig(createActor.getStartingPoint()))
         );
         listOfHelloActors.add(humanActor);
         return this;
