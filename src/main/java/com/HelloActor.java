@@ -1,33 +1,31 @@
 package com;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
-import akka.actor.Props;
-import akka.actor.UntypedAbstractActor;
+import akka.actor.typed.Behavior;
+import akka.actor.typed.javadsl.AbstractBehavior;
+import akka.actor.typed.javadsl.ActorContext;
+import akka.actor.typed.javadsl.Behaviors;
+import akka.actor.typed.javadsl.Receive;
+import com.messages.HelloMessage;
 
-public class HelloActor extends UntypedAbstractActor
+public class HelloActor extends AbstractBehavior<HelloMessage>
 {
-    public void onReceive(Object message)
-    {
-        if( message instanceof HelloMessage)
-        {
-            System.out.println( "My message is: " + ( (HelloMessage)message ).getMessage() );
-        }
+    public HelloActor(ActorContext<HelloMessage> context) {
+        super(context);
     }
 
-    public static void main( String[] args )
-    {
-        ActorSystem actorSystem = ActorSystem.create( "MySystem" );
-        ActorRef actorRef = actorSystem.actorOf( Props.create( HelloActor.class ), "myActor" );
-        actorRef.tell( new HelloMessage( "Hello, Akka!" ), actorRef );
+    @Override
+    public Receive<HelloMessage> createReceive() {
+        return newReceiveBuilder()
+                .onMessage(HelloMessage.class, this::printMessage)
+                .build();
+    }
 
-        try
-        {
-            Thread.sleep( 1000 );
-        }
-        catch( Exception e ) {}
+    public static Behavior<HelloMessage> create() {
+        return Behaviors.setup(HelloActor::new);
+    }
 
-        actorSystem.stop( actorRef );
-        actorSystem.terminate();
+    public HelloActor printMessage(HelloMessage message) {
+        System.out.println( "Hello from actor " );
+        return this;
     }
 }
