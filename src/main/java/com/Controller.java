@@ -10,6 +10,8 @@ import com.messages.CallAllActors;
 import com.messages.ControllerMessage;
 import com.messages.CreateActor;
 import com.messages.HelloMessage;
+import com.models.Point;
+import com.utility.HumanConfigGenerator;
 
 import java.util.List;
 
@@ -17,6 +19,8 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class Controller extends AbstractBehavior<ControllerMessage> {
     List<ActorRef<HelloMessage>> listOfHelloActors = newArrayList();
+
+    public final HumanConfigGenerator humanConfigGenerator = new HumanConfigGenerator();
 
     public Controller(ActorContext<ControllerMessage> context) {
         super(context);
@@ -29,17 +33,16 @@ public class Controller extends AbstractBehavior<ControllerMessage> {
     @Override
     public Receive<ControllerMessage> createReceive() {
         return newReceiveBuilder()
-                .onMessage(CreateActor.class, this::createHelloActor)
+                .onMessage(CreateActor.class, this::createHumanActor)
                 .onMessage(CallAllActors.class, this::callAllActors)
                 .build();
     }
 
-    public Controller createHelloActor(CreateActor createActor) {
-        ActorRef<HelloMessage> newHelloActor = getContext().spawn(
-                HelloActor.create(),
-                "actor"
+    public Controller createHumanActor(CreateActor createActor) {
+        ActorRef<HelloMessage> humanActor = getContext().spawnAnonymous(
+                HumanActor.create(humanConfigGenerator.generateHumanConfig(new Point(0,0)))
         );
-        listOfHelloActors.add(newHelloActor);
+        listOfHelloActors.add(humanActor);
         return this;
     }
 

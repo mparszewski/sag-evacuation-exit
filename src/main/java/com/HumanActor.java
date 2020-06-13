@@ -6,11 +6,14 @@ import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 import com.messages.HelloMessage;
+import com.models.HumanConfig;
 
-public class HelloActor extends AbstractBehavior<HelloMessage>
-{
-    public HelloActor(ActorContext<HelloMessage> context) {
+public class HumanActor extends AbstractBehavior<HelloMessage> {
+    private HumanConfig config;
+
+    public HumanActor(ActorContext<HelloMessage> context, HumanConfig humanConfig) {
         super(context);
+        this.config = humanConfig;
     }
 
     @Override
@@ -20,12 +23,12 @@ public class HelloActor extends AbstractBehavior<HelloMessage>
                 .build();
     }
 
-    public static Behavior<HelloMessage> create() {
-        return Behaviors.setup(HelloActor::new);
+    public static Behavior<HelloMessage> create(HumanConfig humanConfig) {
+        return Behaviors.setup((ctx) -> new HumanActor(ctx, humanConfig));
     }
 
-    public HelloActor printMessage(HelloMessage message) {
-        System.out.println( "Hello from actor " );
+    public HumanActor printMessage(HelloMessage message) {
+        System.out.println( "Hello from actor " + config.getName());
         return this;
     }
 }
