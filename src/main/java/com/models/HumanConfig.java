@@ -14,7 +14,8 @@ public class HumanConfig {
     private int vision;
     private int reactionTime; // in seconds
     private int collaboration;
-    private int insistence; // probablity of maintaining current strategy
+    private int insistence; // higher value means higher chance to change current strategy
     private int knowledge;
+    private int nervousness;
     private Point startingPoint;
 }

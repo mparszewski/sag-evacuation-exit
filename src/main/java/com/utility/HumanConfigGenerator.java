@@ -12,7 +12,7 @@ public class HumanConfigGenerator {
                 .mobility(Mobility.NORMAL)
                 .health(10)
                 .startingPoint(startingPoint)
-                .speed(getRandomValue(3, 6))
+                .speed(RandomUtil.getRandomValue(3, 6))
                 .reactionTime(6)
                 .build();
     }
@@ -22,8 +22,6 @@ public class HumanConfigGenerator {
         return "human-" + i;
     }
 
-    private static int getRandomValue(int min, int max){
-        return (int)(Math.random() * max + min);
-    }
+
 
 }
