@@ -7,9 +7,13 @@ import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 import com.messages.HelloMessage;
 import com.models.HumanConfig;
+import com.models.Point;
+
+import static com.infrastructure.Building.getBuilding;
 
 public class HumanActor extends AbstractBehavior<HelloMessage> {
     private HumanConfig config;
+    private Point actualPosition;
 
     public HumanActor(ActorContext<HelloMessage> context, HumanConfig humanConfig) {
         super(context);
@@ -28,7 +32,11 @@ public class HumanActor extends AbstractBehavior<HelloMessage> {
     }
 
     public HumanActor printMessage(HelloMessage message) {
-        System.out.println( "Hello from actor " + config.getName());
+        System.out.println("Hello from actor " + config.getName());
         return this;
+    }
+
+    public boolean checkMove(Point to) {
+        return getBuilding().isPointAvailable(to);
     }
 }
