@@ -5,6 +5,7 @@ import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
+import com.enums.FireRelation;
 import com.infrastructure.Building;
 import com.infrastructure.Door;
 import com.messages.humanactor.HelloMessage;
@@ -18,6 +19,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import static com.enums.FireRelation.NEAR_FIRE;
+import static com.enums.FireRelation.ON_FIRE;
 import static com.enums.Mobility.CANT_MOVE;
 import static com.enums.Mobility.PANIC;
 import static com.enums.TransferType.DEADEND;
@@ -61,6 +64,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     public HumanActor(ActorContext<HumanActorMessage> context, HumanConfig humanConfig) {
         super(context);
         this.config = humanConfig;
+        this.actualPosition = humanConfig.getStartingPoint();
     }
 
     @Override
@@ -78,32 +82,21 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
 
     public HumanActor makeTurn(MakeTurn makeTurn) {
 
+        checkFire();
+
         if (getBuilding().getDoorByPoint(actualPosition) != null) {
             //TODO: If in the doors currently - continue moving in opposite direction from which came.
         }
 
-        // TODO: implement human actor turn making
-        // TODO: Check if you see {EXIT or TRANSITION} door and those doors are not already checked
-        // TODO: If we see "good" doors - we go there
-        strategy = getVisibleDoorsWithFilteredTransfers(SIGNED_EXIT_PREDICATE)
-                .orElse(getVisibleDoorsWithFilteredTransfers(KNOWS_ARE_EXIT)
-                        .orElse(getVisibleDoorsWithFilteredTransfers(DOORS_NOT_VISITED_YET)
-                                .orElse(getVisibleDoorsWithFilteredTransfers(KNOWS_ARE_DEADEND)
-                                        .orElse(null))));
+        strategy = getObviousStrategy();
 
         if (isNull(strategy)) {
             if (statCheck(config.getNervousness())) {
                 setPanic();
             }
-            // TODO: decide on strategy again
-            // TODO: make movement
+            moveWithoutStrategy();
         } else {
-            // TODO: Check if we keep our strategy
-            if (statCheck(config.getInsistence())) {
-                // TODO: decide on strategy again
-            } else {
-                //TODO: make movement
-            }
+            moveAccordingToStrategy();
         }
         return this;
     }
@@ -112,6 +105,24 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         config.setMobility(PANIC);
         // TODO: add changes to inconsistency, speed ...
         return;
+    }
+
+    private void checkFire() {
+        FireRelation fireRelation = getBuilding().checkIfOnFire(actualPosition);
+
+        if (fireRelation == ON_FIRE) {
+            config.setMobility(CANT_MOVE);
+        } else if (fireRelation == NEAR_FIRE) {
+            config.setHealth(config.getHealth() - 3);
+        }
+    }
+
+    private Door getObviousStrategy() {
+        return getVisibleDoorsWithFilteredTransfers(SIGNED_EXIT_PREDICATE)
+                .orElse(getVisibleDoorsWithFilteredTransfers(KNOWS_ARE_EXIT)
+                        .orElse(getVisibleDoorsWithFilteredTransfers(DOORS_NOT_VISITED_YET)
+                                .orElse(getVisibleDoorsWithFilteredTransfers(KNOWS_ARE_DEADEND)
+                                        .orElse(null))));
     }
 
     private boolean statCheck(int stat) {
@@ -128,7 +139,6 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         if (config.getMobility() != CANT_MOVE) {
             move(vector);
         }
-
     }
 
     public void moveWithoutStrategy() {

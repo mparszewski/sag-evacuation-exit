@@ -2,9 +2,11 @@ package com.infrastructure;
 
 import com.HumanActor;
 import com.enums.Coordinates;
+import com.enums.FireRelation;
 import com.enums.InfrastructureElement;
 import com.google.common.collect.ImmutableSet;
 import com.models.Point;
+import io.vavr.collection.Stream;
 import lombok.*;
 
 import java.util.Collection;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static com.enums.Coordinates.X;
 import static com.enums.Coordinates.Y;
+import static com.enums.FireRelation.*;
 import static com.enums.InfrastructureElement.*;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.infrastructure.Fire.getFire;
@@ -51,7 +54,8 @@ public class Building implements PointListing {
     private List<Room> rooms;
     private List<Door> doors;
     private List<Obstruction> obstructions;
-    private List<HumanActor> actors;
+
+    private List<Point> agents;
 
     public Point getStartPoint() {
         return new Point(0, 0);
@@ -64,6 +68,16 @@ public class Building implements PointListing {
     public boolean isPointAvailable(Point point) {
         InfrastructureElement element = getElementAtPoint(point);
         return FLOOR == element || WINDOW == element || DOOR == element;
+    }
+
+    public FireRelation checkIfOnFire(Point humanPoint) {
+        if (getFire().getAllPoints().contains(humanPoint)) {
+            return ON_FIRE;
+        } else if ( Stream.ofAll(getFire().getAllPoints()).exists(point -> arePointsNearby(point, humanPoint)) ) {
+            return NEAR_FIRE;
+        } else {
+            return FAR_FROM_FIRE;
+        }
     }
 
     public InfrastructureElement getElementAtPoint(Point point) {
@@ -89,6 +103,11 @@ public class Building implements PointListing {
             }
         }
         return WALL;
+    }
+
+    private boolean arePointsNearby(Point point1, Point point2) {
+        return Math.abs(point1.getX() - point2.getX()) <= 1
+                && Math.abs(point1.getY() - point2.getY()) <= 1;
     }
 
 

@@ -1,5 +1,14 @@
 endX: 20
 endY: 20
+agents:
+  - x: 3
+    y: 8
+  - x: 3
+    y: 9
+  - x: 3
+    y: 10
+  - x: 3
+    y: 11
 rooms:
   - startX: 0
     startY: 0
