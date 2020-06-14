@@ -1,5 +1,6 @@
 package com.infrastructure;
 
+import com.HumanActor;
 import com.enums.Coordinates;
 import com.enums.InfrastructureElement;
 import com.google.common.collect.ImmutableSet;
@@ -50,6 +51,7 @@ public class Building implements PointListing {
     private List<Room> rooms;
     private List<Door> doors;
     private List<Obstruction> obstructions;
+    private List<HumanActor> actors;
 
     public Point getStartPoint() {
         return new Point(0, 0);
@@ -115,7 +117,7 @@ public class Building implements PointListing {
         return getDoorIdsInRoom(room).size();
     }
 
-    public List<DoorDistance> getDoorDistanceInGivenArea(Point point, double radius) {
+    public List<DoorDistance> getVisibleDoors(Point point, double radius) {
         return getDoorsWithDistancesFromPoint(point).stream()
                 .filter(doorDistance -> doorDistance.getDistance() < radius)
                 .collect(Collectors.toList());
@@ -144,6 +146,20 @@ public class Building implements PointListing {
                 .orElseThrow(IllegalArgumentException::new);
     }
 
+    public Room getRoomByPoint(Point point) {
+        return rooms.stream()
+                .filter(room -> room.getPoints().contains(point))
+                .findFirst()
+                .orElseThrow(IllegalArgumentException::new);
+    }
+
+    public Transfer getDoorTransferInGivenRoom(Door door, int roomId) {
+        return door.getTransfers().stream()
+                .filter(transfer -> transfer.getFrom() == roomId)
+                .findFirst()
+                .orElseThrow(IllegalArgumentException::new);
+    }
+
     public Room getRoomById(int id) {
         return rooms.stream()
                 .filter(room -> id == room.getId())
@@ -163,6 +179,13 @@ public class Building implements PointListing {
                         .anyMatch(fromId -> fromId == room.getId()))
                 .map(Door::getId)
                 .collect(toList());
+    }
+
+    public Door getDoorByPoint(Point point) {
+        return doors.stream()
+                .filter(door -> door.getPoints().contains(point))
+                .findAny()
+                .orElse(null);
     }
 
     private double countDistance(Point a, Map<Coordinates, Double> doorCenter) {

@@ -1,6 +1,5 @@
 package com.messages.controller;
 
-import com.messages.controller.ControllerMessage;
 import com.models.Point;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

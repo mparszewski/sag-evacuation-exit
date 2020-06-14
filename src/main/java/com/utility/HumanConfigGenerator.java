@@ -6,6 +6,7 @@ import com.models.Point;
 
 public class HumanConfigGenerator {
     private int i = 0;
+
     public HumanConfig generateHumanConfig(Point startingPoint) {
         return HumanConfig.builder()
                 .name(generateName())
@@ -21,7 +22,6 @@ public class HumanConfigGenerator {
         i++;
         return "human-" + i;
     }
-
 
 
 }
