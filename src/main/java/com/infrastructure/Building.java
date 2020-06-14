@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Random;
 
 import static com.enums.InfrastructureElement.*;
 import static com.google.common.collect.Lists.newArrayList;
@@ -55,7 +56,7 @@ public class Building implements PointListing {
         return FLOOR.equals(element) || WINDOW.equals(element) || DOOR.equals(element);
     }
 
-    private InfrastructureElement getElementAtPoint(Point point) {
+    public InfrastructureElement getElementAtPoint(Point point) {
         if (getPoints().contains(point)) {
             return WALL;
         }
@@ -67,14 +68,14 @@ public class Building implements PointListing {
                 return DOOR;
             }
         }
-        for (Room room : rooms) {
-            if (room.getPoints().contains(point)) {
-                return FLOOR;
-            }
-        }
         for (Obstruction obstruction : obstructions) {
             if (obstruction.getPoints().contains(point)) {
                 return OBSTRUCTION;
+            }
+        }
+        for (Room room : rooms) {
+            if (room.getPoints().contains(point)) {
+                return FLOOR;
             }
         }
         return WALL;
@@ -94,5 +95,11 @@ public class Building implements PointListing {
             points.add(new Point(endX, y));
         }
         return ImmutableSet.copyOf(points).asList();
+    }
+
+    public Point getRandomAvailablePoint() {
+        Random random = new Random();
+        Room room = rooms.get(random.nextInt(rooms.size()));
+        return room.getPoints().get(random.nextInt(room.getPoints().size()));
     }
 }

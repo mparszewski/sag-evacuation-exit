@@ -10,6 +10,11 @@ repositories {
     mavenCentral()
 }
 
+test {
+    useJUnit()
+    maxHeapSize = '1G'
+}
+
 dependencies {
     compile group: 'io.vavr', name: 'vavr', version: '0.9.0'
     compile group: 'com.google.guava', name: 'guava', version: '11.0.2'

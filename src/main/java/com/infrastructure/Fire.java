@@ -7,12 +7,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static com.infrastructure.Building.getBuilding;
 import static java.lang.Math.random;
-import static java.lang.Math.round;
 import static lombok.AccessLevel.NONE;
 
 @Getter
@@ -20,24 +20,19 @@ import static lombok.AccessLevel.NONE;
 public class Fire implements PointListing {
 
     private Point startPoint;
-    private List<Point> allPoints;
+    private CopyOnWriteArrayList<Point> allPoints;
 
     @Getter(NONE)
     private final Consumer<Point> RANDOM_SPREAD = point -> {
         Stream.of(Direction.values())
-                .filter(d -> random() > 0.5)
+                .filter(d -> random() >= 0.0)
                 .forEach(direction -> addPoint(point, direction));
     };
 
     private Fire() {
-        Building building = getBuilding();
-        do {
-            int startX = (int) round(building.getEndPoint().getX() * random());
-            int startY = (int) round(building.getEndPoint().getY() * random());
-            startPoint = new Point(startX, startY);
-        }
-        while (!getBuilding().isPointAvailable(startPoint));
-        allPoints = Lists.newArrayList();
+        startPoint = getBuilding().getRandomAvailablePoint();
+        allPoints = new CopyOnWriteArrayList<>();
+        allPoints.add(startPoint);
     }
 
     public static Fire fire;
