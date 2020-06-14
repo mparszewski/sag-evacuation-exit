@@ -3,9 +3,7 @@ package com.infrastructure;
 import com.enums.InfrastructureElement;
 import com.google.common.collect.ImmutableSet;
 import com.models.Point;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 import java.util.Random;
@@ -15,16 +13,16 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.infrastructure.Fire.getFire;
 import static com.utility.YamlParser.parseFromYaml;
 import static lombok.AccessLevel.NONE;
+import static lombok.AccessLevel.PRIVATE;
 
 @Getter
 @Setter
+@NoArgsConstructor(access = PRIVATE)
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Building implements PointListing {
 
     private static Building building;
-
-    private Building() {
-    }
 
     public static Building getBuilding() {
         if (building == null) {
@@ -53,7 +51,7 @@ public class Building implements PointListing {
 
     public boolean isPointAvailable(Point point) {
         InfrastructureElement element = getElementAtPoint(point);
-        return FLOOR.equals(element) || WINDOW.equals(element) || DOOR.equals(element);
+        return FLOOR == element || WINDOW == element || DOOR == element;
     }
 
     public InfrastructureElement getElementAtPoint(Point point) {

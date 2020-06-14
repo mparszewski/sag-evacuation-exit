@@ -2,6 +2,7 @@ package com.infrastructure;
 
 import com.models.Point;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import static com.google.common.collect.Lists.newArrayList;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Obstruction implements PointListing {
     private int startX;
     private int startY;

@@ -1,7 +1,6 @@
 package com.infrastructure;
 
 import com.enums.Direction;
-import com.google.common.collect.Lists;
 import com.models.Point;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +24,7 @@ public class Fire implements PointListing {
     @Getter(NONE)
     private final Consumer<Point> RANDOM_SPREAD = point -> {
         Stream.of(Direction.values())
-                .filter(d -> random() >= 0.0)
+                .filter(d -> random() > 0.5)
                 .forEach(direction -> addPoint(point, direction));
     };
 

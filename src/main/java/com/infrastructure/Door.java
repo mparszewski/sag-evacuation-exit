@@ -2,10 +2,7 @@ package com.infrastructure;
 
 import com.enums.Direction;
 import com.models.Point;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -16,6 +13,7 @@ import static lombok.AccessLevel.NONE;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Door implements PointListing {
 
     private int id;
