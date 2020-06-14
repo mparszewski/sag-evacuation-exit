@@ -12,13 +12,13 @@ import com.messages.humanactor.HumanActorMessage;
 import com.messages.humanactor.MakeTurn;
 import com.models.HumanConfig;
 import com.models.Point;
+import com.utility.RandomUtil;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
+import static com.enums.Mobility.CANT_MOVE;
 import static com.enums.Mobility.PANIC;
 import static com.enums.TransferType.DEADEND;
 import static com.enums.TransferType.EXIT_SIGNED;
@@ -26,7 +26,8 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.infrastructure.Building.DoorDistance;
 import static com.infrastructure.Building.getBuilding;
 import static com.utility.RandomUtil.randomCheck;
-import static java.util.Comparator.*;
+import static java.lang.Math.abs;
+import static java.util.Comparator.comparing;
 import static java.util.Objects.isNull;
 
 public class HumanActor extends AbstractBehavior<HumanActorMessage> {
@@ -40,17 +41,17 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
                     getBuilding().getRoomByPoint(actualPosition).getId()).getType() == EXIT_SIGNED;
 
     Predicate<DoorDistance> DOORS_NOT_VISITED_YET = doorDistance ->
-            !checkedDoors.contains(doorDistance.getDoor());
+            !checkedDoors.contains(doorDistance.getDoor()) || config.getMobility() == PANIC;
 
     Predicate<DoorDistance> KNOWS_ARE_EXIT = doorDistance ->
             getBuilding().getDoorTransferInGivenRoom(doorDistance.getDoor(),
                     getBuilding().getRoomByPoint(actualPosition).getId()).getType() == EXIT_SIGNED &&
-                    this.config.getKnowledge() > 7;
+                    statCheck(config.getKnowledge());
 
     Predicate<DoorDistance> KNOWS_ARE_DEADEND = doorDistance ->
             getBuilding().getDoorTransferInGivenRoom(doorDistance.getDoor(),
                     getBuilding().getRoomByPoint(actualPosition).getId()).getType() != DEADEND &&
-                    this.config.getKnowledge() > 7;
+                    statCheck(config.getKnowledge());
 
 
     public static Behavior<HumanActorMessage> create(HumanConfig humanConfig) {
@@ -84,15 +85,11 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         // TODO: implement human actor turn making
         // TODO: Check if you see {EXIT or TRANSITION} door and those doors are not already checked
         // TODO: If we see "good" doors - we go there
-
-        if (isNull(strategy)) {
-            strategy = getVisibleDoorsWithFilteredTransfers(SIGNED_EXIT_PREDICATE)
-                    .orElse(getVisibleDoorsWithFilteredTransfers(KNOWS_ARE_EXIT)
-                            .orElse(getVisibleDoorsWithFilteredTransfers(DOORS_NOT_VISITED_YET)
-                                    .orElse(getVisibleDoorsWithFilteredTransfers(KNOWS_ARE_DEADEND)
-                                            .orElse(null))));
-        }
-
+        strategy = getVisibleDoorsWithFilteredTransfers(SIGNED_EXIT_PREDICATE)
+                .orElse(getVisibleDoorsWithFilteredTransfers(KNOWS_ARE_EXIT)
+                        .orElse(getVisibleDoorsWithFilteredTransfers(DOORS_NOT_VISITED_YET)
+                                .orElse(getVisibleDoorsWithFilteredTransfers(KNOWS_ARE_DEADEND)
+                                        .orElse(null))));
 
         if (isNull(strategy)) {
             if (statCheck(config.getNervousness())) {
@@ -123,6 +120,42 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
 
     public boolean checkMove(Point to) {
         return getBuilding().isPointAvailable(to);
+    }
+
+    public void moveAccordingToStrategy() {
+        Point vector = new Point(strategy.getStartPoint().getX() - actualPosition.getX(),
+                strategy.getStartPoint().getY() - actualPosition.getY());
+        if (config.getMobility() != CANT_MOVE) {
+            move(vector);
+        }
+
+    }
+
+    public void moveWithoutStrategy() {
+        int divide = RandomUtil.getRandomValue(0, config.getSpeed());
+        int x = config.getSpeed() - divide;
+        Point vector = new Point(x, divide);
+        if (config.getMobility() != CANT_MOVE) {
+            move(vector);
+        }
+    }
+
+    private void move(Point vector) {
+        for (int i = 1; i <= config.getSpeed(); i++) {
+            Point transformation;
+            if (abs(vector.getX()) > abs(vector.getY())) {
+                transformation = new Point(vector.getX() / abs(vector.getX()), 0);
+            } else {
+                transformation = new Point(0, vector.getX() / abs(vector.getX()));
+            }
+            Point newPoint = new Point(actualPosition.getX() + transformation.getX(),
+                    actualPosition.getY() + transformation.getY());
+            if (getBuilding().isPointAvailable(newPoint)) {
+                actualPosition = newPoint;
+                vector.setX(vector.getX() - transformation.getX());
+                vector.setY(vector.getY() - transformation.getY());
+            }
+        }
     }
 
     private Optional<Door> getVisibleDoorsWithFilteredTransfers(Predicate<DoorDistance> predicate) {
