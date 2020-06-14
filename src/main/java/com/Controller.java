@@ -6,19 +6,24 @@ import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
-import com.messages.CallAllActors;
-import com.messages.ControllerMessage;
-import com.messages.CreateActor;
-import com.messages.HelloMessage;
-import com.models.Point;
+import com.infrastructure.Building;
+import com.infrastructure.Fire;
+import com.messages.controller.CallAllActors;
+import com.messages.controller.ControllerMessage;
+import com.messages.controller.CreateActor;
+import com.messages.controller.MakeRound;
+import com.messages.humanactor.HelloMessage;
+import com.messages.humanactor.HumanActorMessage;
+import com.messages.humanactor.MakeTurn;
 import com.utility.HumanConfigGenerator;
 
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.infrastructure.Building.*;
 
 public class Controller extends AbstractBehavior<ControllerMessage> {
-    List<ActorRef<HelloMessage>> listOfHelloActors = newArrayList();
+    List<ActorRef<HumanActorMessage>> listOfHelloActors = newArrayList();
 
     public final HumanConfigGenerator humanConfigGenerator = new HumanConfigGenerator();
 
@@ -35,14 +40,22 @@ public class Controller extends AbstractBehavior<ControllerMessage> {
         return newReceiveBuilder()
                 .onMessage(CreateActor.class, this::createHumanActor)
                 .onMessage(CallAllActors.class, this::callAllActors)
+                .onMessage(MakeRound.class, this::makeRound)
                 .build();
     }
 
     public Controller createHumanActor(CreateActor createActor) {
-        ActorRef<HelloMessage> humanActor = getContext().spawnAnonymous(
+        ActorRef<HumanActorMessage> humanActor = getContext().spawnAnonymous(
                 HumanActor.create(humanConfigGenerator.generateHumanConfig(createActor.getStartingPoint()))
         );
         listOfHelloActors.add(humanActor);
+        return this;
+    }
+
+    public Controller makeRound(MakeRound makeRound) {
+        // TODO: Add fire spreading here
+        Fire.getFire().spreadRandomly();
+        listOfHelloActors.forEach(actorRef -> actorRef.tell(new MakeTurn(makeRound.getNumberOfRound())));
         return this;
     }
 

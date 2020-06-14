@@ -2,11 +2,15 @@ package com;
 
 import com.infrastructure.Building;
 import com.infrastructure.Fire;
+import com.infrastructure.Room;
 import com.models.Point;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static com.enums.InfrastructureElement.*;
+import static com.infrastructure.Building.*;
 import static com.infrastructure.Building.getBuilding;
 import static com.infrastructure.Fire.getFire;
 import static org.junit.Assert.assertEquals;
@@ -67,6 +71,26 @@ public class BuildingTest {
         fire.spreadRandomly();
         fire.spreadRandomly();
         assertTrue(fire.getPoints().size() > 1);
+    }
+
+    @Test
+    public void testGetDoorsNumber() {
+        Room room1 = building.getRoomById(2);
+        Room room2 = building.getRoomById(4);
+        assertEquals(3, building.getNumberOfDoors(room1));
+        assertEquals(2, building.getNumberOfDoors(room2));
+    }
+
+    @Test
+    public void testGetDoorDistance() {
+        List<DoorDistance> doorsWithDistances = building.getDoorsWithDistancesFromPoint(new Point(15, 19));
+        assertEquals(2, doorsWithDistances.size());
+    }
+
+    @Test
+    public void testGetClosestDoors() {
+        DoorDistance doorsWithDistances = building.getClosestDoorDistance(new Point(7, 9));
+        assertEquals(2.0, doorsWithDistances.getDistance(), 0.0);
     }
 
 }

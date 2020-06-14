@@ -1,14 +1,21 @@
 package com.infrastructure;
 
+import com.enums.Coordinates;
 import com.enums.Direction;
+import com.google.common.collect.Maps;
 import com.models.Point;
 import io.vavr.API;
 import lombok.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static com.enums.Coordinates.*;
+import static com.enums.Direction.*;
 import static com.enums.Direction.*;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.*;
 import static io.vavr.API.$;
 import static io.vavr.API.Case;
 import static lombok.AccessLevel.NONE;
@@ -58,5 +65,22 @@ public class Door implements PointListing {
             }
         }
         return points;
+    }
+
+    public Map<Coordinates, Double> getDoorCenter() {
+        Map<Coordinates, Double> doorCenterMap = newHashMap();
+        Point endPoint = getEndPoint();
+        if (direction == UP || direction == DOWN) {
+            doorCenterMap.put(X, (double) startX);
+            doorCenterMap.put(Y, mean(startY, endPoint.getY()));
+        } else if (direction == LEFT || direction == RIGHT) {
+            doorCenterMap.put(X, mean(startX, endPoint.getX()));
+            doorCenterMap.put(Y, (double) startY);
+        }
+        return doorCenterMap;
+    }
+
+    private double mean(int i, int j) {
+        return ((double) (i + j)) / 2;
     }
 }

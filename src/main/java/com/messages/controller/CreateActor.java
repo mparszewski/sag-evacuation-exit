@@ -1,4 +1,4 @@
-package com.messages;
+package com.messages.controller;
 
 import com.models.Point;
 import lombok.AllArgsConstructor;

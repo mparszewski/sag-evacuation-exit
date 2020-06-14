@@ -33,8 +33,8 @@ doors:
     capacity: 2
     id: 1
     transfers:
-      - type: EXIT
-        from: 1
+      - type: EXIT_SIGNED
+        from: 2
         to: 0
   - startX: 5
     startY: 9
@@ -72,3 +72,12 @@ doors:
       - type: TRANSITION
         from: 4
         to: 2
+  - startX: 0
+    startY: 10
+    direction: DOWN
+    capacity: 1
+    id: 5
+    transfers:
+      - type: EXIT_UNSIGNED
+        from: 1
+        to: 0
