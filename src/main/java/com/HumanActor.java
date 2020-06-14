@@ -6,7 +6,6 @@ import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 import com.enums.FireRelation;
-import com.enums.Mobility;
 import com.infrastructure.Building;
 import com.infrastructure.Door;
 import com.messages.humanactor.HelloMessage;
@@ -20,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static com.enums.Mobility.CANT_MOVE;
 import static com.enums.FireRelation.NEAR_FIRE;
 import static com.enums.FireRelation.ON_FIRE;
 import static com.enums.Mobility.CANT_MOVE;
@@ -92,13 +90,13 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
 
         strategy = getObviousStrategy();
 
-        if(isNull(strategy)) {
+        if (isNull(strategy)) {
             if (statCheck(config.getNervousness())) {
                 setPanic();
             }
             moveWithoutStrategy();
         } else {
-            moveAccordingStrategy();
+            moveAccordingToStrategy();
         }
         return this;
     }
@@ -112,7 +110,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     private void checkFire() {
         FireRelation fireRelation = getBuilding().checkIfOnFire(actualPosition);
 
-        if(fireRelation == ON_FIRE) {
+        if (fireRelation == ON_FIRE) {
             config.setMobility(CANT_MOVE);
         } else if (fireRelation == NEAR_FIRE) {
             config.setHealth(config.getHealth() - 3);
@@ -141,7 +139,6 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         if (config.getMobility() != CANT_MOVE) {
             move(vector);
         }
-
     }
 
     public void moveWithoutStrategy() {
