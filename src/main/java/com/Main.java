@@ -1,10 +1,10 @@
 package com;
 
 import akka.actor.typed.ActorSystem;
-import com.messages.CallAllActors;
-import com.messages.ControllerMessage;
-import com.messages.CreateActor;
-import com.messages.MakeRound;
+import com.messages.controller.CallAllActors;
+import com.messages.controller.ControllerMessage;
+import com.messages.controller.CreateActor;
+import com.messages.controller.MakeRound;
 import com.models.Point;
 
 public class Main {

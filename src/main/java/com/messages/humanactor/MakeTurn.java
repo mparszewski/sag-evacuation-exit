@@ -1,10 +1,10 @@
-package com.messages;
+package com.messages.humanactor;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MakeRound implements ControllerMessage {
+public class MakeTurn implements HumanActorMessage {
     private int numberOfRound;
 }
