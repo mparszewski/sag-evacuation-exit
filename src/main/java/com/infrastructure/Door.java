@@ -2,11 +2,15 @@ package com.infrastructure;
 
 import com.enums.Direction;
 import com.models.Point;
+import io.vavr.API;
 import lombok.*;
 
 import java.util.List;
 
+import static com.enums.Direction.*;
 import static com.google.common.collect.Lists.newArrayList;
+import static io.vavr.API.$;
+import static io.vavr.API.Case;
 import static lombok.AccessLevel.NONE;
 
 @Getter
@@ -35,15 +39,13 @@ public class Door implements PointListing {
     }
 
     public Point getEndPoint() {
-        Point endPoint;
-        switch (direction) {
-            case UP -> endPoint = new Point(startX, startY - capacity + 1);
-            case DOWN -> endPoint = new Point(startX, startY + capacity - 1);
-            case LEFT -> endPoint = new Point(startX - capacity + 1, startY);
-            case RIGHT -> endPoint = new Point(startX + capacity - 1, startY);
-            default -> endPoint = new Point(startX, startY);
-        }
-        return endPoint;
+        return API.Match(direction).of(
+                Case($(UP), new Point(startX, startY - capacity + 1)),
+                Case($(DOWN), new Point(startX, startY + capacity - 1)),
+                Case($(LEFT), new Point(startX - capacity + 1, startY)),
+                Case($(RIGHT), new Point(startX + capacity - 1, startY)),
+                Case($(), new Point(startX, startY))
+        );
     }
 
     @Override
