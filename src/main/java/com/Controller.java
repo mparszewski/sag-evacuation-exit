@@ -7,7 +7,6 @@ import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 import com.messages.*;
-import com.models.Point;
 import com.utility.HumanConfigGenerator;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class Controller extends AbstractBehavior<ControllerMessage> {
         return newReceiveBuilder()
                 .onMessage(CreateActor.class, this::createHumanActor)
                 .onMessage(CallAllActors.class, this::callAllActors)
-                .onMessage(MakeTurn.class, this::makeTurn)
+                .onMessage(MakeRound.class, this::makeRound)
                 .build();
     }
 
@@ -44,8 +43,8 @@ public class Controller extends AbstractBehavior<ControllerMessage> {
         return this;
     }
 
-    public Controller makeTurn(MakeTurn makeTurn) {
-        // TODO: Implement turn
+    public Controller makeRound(MakeRound makeRound) {
+        // TODO: Implement turn, get numberOfRound from message and pass to makeTurn
         return this;
     }
 
