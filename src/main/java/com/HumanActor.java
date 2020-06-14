@@ -63,6 +63,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     public HumanActor(ActorContext<HumanActorMessage> context, HumanConfig humanConfig) {
         super(context);
         this.config = humanConfig;
+        this.actualPosition = humanConfig.getStartingPoint();
     }
 
     @Override
