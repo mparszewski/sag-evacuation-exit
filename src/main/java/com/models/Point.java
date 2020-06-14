@@ -1,5 +1,6 @@
 package com.models;
 
+import com.enums.Direction;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

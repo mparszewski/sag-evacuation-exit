@@ -1,0 +1,74 @@
+endX: 20
+endY: 20
+rooms:
+  - startX: 0
+    startY: 0
+    endX: 5
+    endY: 20
+    id: 1
+  - startX: 5
+    startY: 0
+    endX: 20
+    endY: 13
+    id: 2
+  - startX: 5
+    startY: 13
+    endX: 12
+    endY: 20
+    id: 3
+  - startX: 12
+    startY: 13
+    endX: 20
+    endY: 20
+    id: 4
+obstructions:
+  - startX: 3
+    startY: 3
+    endX: 3
+    endY: 7
+doors:
+  - startX: 9
+    startY: 0
+    direction: RIGHT
+    capacity: 2
+    id: 1
+    transfers:
+      - type: EXIT
+        from: 1
+        to: 0
+  - startX: 5
+    startY: 9
+    direction: DOWN
+    capacity: 1
+    id: 2
+    transfers:
+      - type: TRANSITION
+        from: 1
+        to: 2
+      - type: TRANSITION
+        from: 2
+        to: 1
+  - startX: 12
+    startY: 15
+    direction: DOWN
+    capacity: 2
+    id: 3
+    transfers:
+      - type: TRANSITION
+        from: 3
+        to: 4
+      - type: DEADEND
+        from: 4
+        to: 3
+  - startX: 16
+    startY: 13
+    direction: LEFT
+    capacity: 1
+    id: 4
+    transfers:
+      - type: TRANSITION
+        from: 2
+        to: 4
+      - type: TRANSITION
+        from: 4
+        to: 2
