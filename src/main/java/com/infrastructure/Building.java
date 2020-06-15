@@ -54,7 +54,6 @@ public class Building implements PointListing {
     private List<Room> rooms;
     private List<Door> doors;
     private List<Obstruction> obstructions;
-
     private List<Point> agents;
 
     public Point getStartPoint() {

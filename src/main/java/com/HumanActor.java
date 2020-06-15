@@ -101,6 +101,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         } else {
             moveAccordingToStrategy();
         }
+        logger.info("Actor: " + this.config.getName() + ", new position x: " + actualPosition.getX() + ", y: " + actualPosition.getY());
         return this;
     }
 
