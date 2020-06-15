@@ -55,13 +55,13 @@ public class Building implements PointListing {
     private List<Point> agents;
 
     public void updatePoint(Point oldPoint, Point newPoint) {
-        agents = agents.stream().map(point -> {
+        setAgents(agents.stream().map(point -> {
             if (point.equals(oldPoint)) {
                 return newPoint;
             } else {
                 return point;
             }
-        }).collect(toList());
+        }).collect(toList()));
     }
 
     public Point getStartPoint() {
@@ -92,6 +92,11 @@ public class Building implements PointListing {
     }
 
     public InfrastructureElement getElementAtPoint(Point point) {
+        for (Door door : doors) {
+            if (door.getPoints().contains(point)) {
+                return DOOR;
+            }
+        }
         if (getPoints().contains(point)) {
             return WALL;
         }
@@ -100,11 +105,6 @@ public class Building implements PointListing {
         }
         if (getFire().getPoints().contains(point)) {
             return FIRE;
-        }
-        for (Door door : doors) {
-            if (door.getPoints().contains(point)) {
-                return DOOR;
-            }
         }
         for (Obstruction obstruction : obstructions) {
             if (obstruction.getPoints().contains(point)) {

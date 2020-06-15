@@ -2,11 +2,13 @@ package com.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Point {
     private int x;
     private int y;
@@ -18,13 +20,13 @@ public class Point {
 
     public Point up() {
         Point newPoint = new Point(this);
-        newPoint.setY(newPoint.getY() + 1);
+        newPoint.setY(newPoint.getY() - 1 );
         return newPoint;
     }
 
     public Point down() {
         Point newPoint = new Point(this);
-        newPoint.setY(newPoint.getY() - 1);
+        newPoint.setY(newPoint.getY() + 1);
         return newPoint;
     }
 

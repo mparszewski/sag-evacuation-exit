@@ -39,7 +39,7 @@ doors:
   - startX: 9
     startY: 0
     direction: RIGHT
-    capacity: 2
+    capacity: 1
     id: 1
     transfers:
       - type: EXIT_SIGNED

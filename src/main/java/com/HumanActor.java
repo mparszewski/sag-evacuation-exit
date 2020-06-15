@@ -166,6 +166,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
             newPoint = actualPosition.right();
             if(getBuilding().isPointAvailable(newPoint)) {
                 trueMove(newPoint);
+                return;
             } else if (getBuilding().isHumanThere(newPoint)) {
                 return;
             }
@@ -174,22 +175,25 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
             newPoint =  actualPosition.left();
             if(getBuilding().isPointAvailable(newPoint)) {
                 trueMove(newPoint);
-            } else if (getBuilding().isHumanThere(newPoint)) {
                 return;
-            }
-        }
-        if(destination.getY() > actualPosition.getY()) {
-            newPoint =  actualPosition.up();
-            if(getBuilding().isPointAvailable(newPoint)) {
-                trueMove(newPoint);
             } else if (getBuilding().isHumanThere(newPoint)) {
                 return;
             }
         }
         if(destination.getY() < actualPosition.getY()) {
+            newPoint =  actualPosition.up();
+            if(getBuilding().isPointAvailable(newPoint)) {
+                trueMove(newPoint);
+                return;
+            } else if (getBuilding().isHumanThere(newPoint)) {
+                return;
+            }
+        }
+        if(destination.getY() > actualPosition.getY()) {
             newPoint =  actualPosition.down();
             if(getBuilding().isPointAvailable(newPoint)) {
                 trueMove(newPoint);
+                return;
             } else if (getBuilding().isHumanThere(newPoint)) {
                 return;
             }
@@ -208,13 +212,13 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         Point newPoint = actualPosition;
         checkedDoors.add(getBuilding().getDoorByPoint(actualPosition));
         if (actualPosition.getX() > lastPosition.getX()) {
-            newPoint.setX(actualPosition.getX() + 1);
+            newPoint = actualPosition.right();
         } else if (actualPosition.getX() < lastPosition.getX()) {
-            newPoint.setX(actualPosition.getX() - 1);
+            newPoint = actualPosition.left();
         } else if (actualPosition.getY() > lastPosition.getY()) {
-            newPoint.setY(actualPosition.getY() + 1);
+            newPoint = actualPosition.up();
         } else if (actualPosition.getY() < lastPosition.getY()) {
-            newPoint.setY(actualPosition.getY() - 1);
+            newPoint = actualPosition.down();
         }
 
         if(getBuilding().isPointAvailable(newPoint)) {
