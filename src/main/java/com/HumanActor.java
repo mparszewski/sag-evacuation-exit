@@ -86,6 +86,8 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
 
     public HumanActor makeTurn(MakeTurn makeTurn) {
         if(config.getMobility() == CANT_MOVE || config.getMobility() == SAFE) {
+            logger.info(makeTurn.getNumberOfRound() + DELIMITER + config.getName() +
+                    DELIMITER + actualPosition.toString() + DELIMITER + config.getMobility());
             return this;
         }
 
