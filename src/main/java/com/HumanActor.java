@@ -90,6 +90,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
             if (currentDoors.isExitDoor()) {
                 config.setMobility(SAFE);
                 actualPosition = SAFE_POINT;
+                getBuilding().updatePoint(actualPosition, SAFE_POINT);
                 logPosition(makeTurn.getNumberOfRound());
                 return this;
             }
@@ -217,7 +218,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         }
 
         if(getBuilding().isPointAvailable(newPoint)) {
-            actualPosition = newPoint;
+            trueMove(newPoint);
         }
     }
 }
