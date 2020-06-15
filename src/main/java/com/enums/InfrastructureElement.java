@@ -1,6 +1,6 @@
 package com.enums;
 
 public enum InfrastructureElement {
-    FLOOR, WALL, DOOR, WINDOW, OBSTRUCTION, FIRE;
+    FLOOR, WALL, DOOR, WINDOW, OBSTRUCTION, FIRE, HUMAN;
 }
 

@@ -38,7 +38,7 @@ public class LogParser {
         FileWriter writer = new FileWriter(pathToSave);
         StringBuilder builder = new StringBuilder("nr_rundy");
         for (int i = 1; i <= numberOfActors; i++) {
-            builder.append(", ").append(i);
+            builder.append(". ").append(i);
         }
         builder.append(", ");
         builder.append("ogien");
@@ -49,9 +49,9 @@ public class LogParser {
             i++;
             builder.append(i);
             for (ActorEntry actorEntry : filteredActorEntries(actorEntries, valueOf(i))) {
-                builder.append(", ").append(actorEntry.mergeCoordinatesAndMobility());
+                builder.append(". ").append(actorEntry.mergeCoordinatesAndMobility());
             }
-            builder.append(", [").append(fireEntry).append("]").append("\n");
+            builder.append(". [").append(fireEntry).append("]").append("\n");
         }
         writer.append(builder.toString());
         writer.flush();

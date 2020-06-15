@@ -83,6 +83,9 @@ public class Building implements PointListing {
         if (getPoints().contains(point)) {
             return WALL;
         }
+        if (getAgents().contains(point)) {
+            return HUMAN;
+        }
         if (getFire().getPoints().contains(point)) {
             return FIRE;
         }
