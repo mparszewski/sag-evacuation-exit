@@ -29,7 +29,6 @@ import static com.infrastructure.Building.DoorDistance;
 import static com.infrastructure.Building.getBuilding;
 import static com.utility.RandomUtil.randomCheck;
 import static com.utility.Utils.SAFE_POINT;
-import static java.lang.Math.abs;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -104,7 +103,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
             if (statCheck(config.getNervousness())) {
                 setPanic();
             }
-            moveWithoutStrategy();
+            moveAccordingToStrategy();
         } else {
             moveAccordingToStrategy();
         }
@@ -119,8 +118,6 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
 
     private void setPanic() {
         config.setMobility(PANIC);
-        // TODO: add changes to inconsistency, speed ...
-        return;
     }
 
     private void checkFire() {
@@ -150,33 +147,50 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     }
 
     public void moveAccordingToStrategy() {
-        Point vector = new Point(strategy.getStartPoint().getX() - actualPosition.getX(),
-                strategy.getStartPoint().getY() - actualPosition.getY());
-        move(vector);
+        Point destination = strategy.getStartPoint();
+        for (int i = 0; i < config.getSpeed(); i++) {
+            move(destination);
+        }
     }
 
-    public void moveWithoutStrategy() {
-        int divide = RandomUtil.getRandomValue(0, config.getSpeed());
-        int x = config.getSpeed() - divide;
-        Point vector = new Point(x, divide);
-        move(vector);
+    private void trueMove(Point newPoint) {
+        getBuilding().updatePoint(actualPosition, newPoint);
+        lastPosition = actualPosition;
+        actualPosition = newPoint;
     }
 
-    private void move(Point vector) {
-        for (int i = 1; i <= config.getSpeed(); i++) {
-            Point transformation;
-            if (abs(vector.getX()) > abs(vector.getY())) {
-                transformation = new Point(vector.getX() / abs(vector.getX()), 0);
-            } else {
-                transformation = new Point(0, vector.getX() / abs(vector.getX()));
+    private void move(Point destination) {
+        Point newPoint;
+        if(destination.getX() > actualPosition.getX()) {
+            newPoint = actualPosition.right();
+            if(getBuilding().isPointAvailable(newPoint)) {
+                trueMove(newPoint);
+            } else if (getBuilding().isHumanThere(newPoint)) {
+                return;
             }
-            Point newPoint = new Point(actualPosition.getX() + transformation.getX(),
-                    actualPosition.getY() + transformation.getY());
-            if (getBuilding().isPointAvailable(newPoint)) {
-                lastPosition = actualPosition;
-                actualPosition = newPoint;
-                vector.setX(vector.getX() - transformation.getX());
-                vector.setY(vector.getY() - transformation.getY());
+        }
+        if(destination.getX() < actualPosition.getX()) {
+            newPoint =  actualPosition.left();
+            if(getBuilding().isPointAvailable(newPoint)) {
+                trueMove(newPoint);
+            } else if (getBuilding().isHumanThere(newPoint)) {
+                return;
+            }
+        }
+        if(destination.getY() > actualPosition.getY()) {
+            newPoint =  actualPosition.up();
+            if(getBuilding().isPointAvailable(newPoint)) {
+                trueMove(newPoint);
+            } else if (getBuilding().isHumanThere(newPoint)) {
+                return;
+            }
+        }
+        if(destination.getY() < actualPosition.getY()) {
+            newPoint =  actualPosition.down();
+            if(getBuilding().isPointAvailable(newPoint)) {
+                trueMove(newPoint);
+            } else if (getBuilding().isHumanThere(newPoint)) {
+                return;
             }
         }
     }
@@ -201,7 +215,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         } else if (actualPosition.getY() < lastPosition.getY()) {
             newPoint.setY(actualPosition.getY() - 1);
         }
-        
+
         if(getBuilding().isPointAvailable(newPoint)) {
             actualPosition = newPoint;
         }

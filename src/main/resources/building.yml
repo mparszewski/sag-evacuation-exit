@@ -54,7 +54,7 @@ doors:
       - type: TRANSITION
         from: 1
         to: 2
-      - type: TRANSITION
+      - type: DEADEND
         from: 2
         to: 1
   - startX: 12
@@ -81,12 +81,3 @@ doors:
       - type: TRANSITION
         from: 4
         to: 2
-  - startX: 0
-    startY: 10
-    direction: DOWN
-    capacity: 1
-    id: 5
-    transfers:
-      - type: EXIT_UNSIGNED
-        from: 1
-        to: 0
