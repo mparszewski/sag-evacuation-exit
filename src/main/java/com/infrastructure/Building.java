@@ -1,6 +1,5 @@
 package com.infrastructure;
 
-import com.HumanActor;
 import com.enums.Coordinates;
 import com.enums.FireRelation;
 import com.enums.InfrastructureElement;
@@ -13,7 +12,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import static com.enums.Coordinates.X;
 import static com.enums.Coordinates.Y;
@@ -56,6 +54,16 @@ public class Building implements PointListing {
     private List<Obstruction> obstructions;
     private List<Point> agents;
 
+    public void updatePoint(Point oldPoint, Point newPoint) {
+        agents = agents.stream().map(point -> {
+            if (point.equals(oldPoint)) {
+                return newPoint;
+            } else {
+                return point;
+            }
+        }).collect(toList());
+    }
+
     public Point getStartPoint() {
         return new Point(0, 0);
     }
@@ -69,10 +77,14 @@ public class Building implements PointListing {
         return FLOOR == element || WINDOW == element || DOOR == element;
     }
 
+    public boolean isHumanThere(Point point) {
+        return getElementAtPoint(point) == HUMAN;
+    }
+
     public FireRelation checkIfOnFire(Point humanPoint) {
         if (getFire().getAllPoints().contains(humanPoint)) {
             return ON_FIRE;
-        } else if ( Stream.ofAll(getFire().getAllPoints()).exists(point -> arePointsNearby(point, humanPoint)) ) {
+        } else if (Stream.ofAll(getFire().getAllPoints()).exists(point -> arePointsNearby(point, humanPoint))) {
             return NEAR_FIRE;
         } else {
             return FAR_FROM_FIRE;
@@ -141,7 +153,7 @@ public class Building implements PointListing {
     public List<DoorDistance> getVisibleDoors(Point point, double radius) {
         return getDoorsWithDistancesFromPoint(point).stream()
                 .filter(doorDistance -> doorDistance.getDistance() < radius)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     public List<DoorDistance> getDoorsWithDistancesFromPoint(Point point) {
