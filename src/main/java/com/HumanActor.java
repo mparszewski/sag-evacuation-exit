@@ -8,7 +8,6 @@ import akka.actor.typed.javadsl.Receive;
 import com.enums.FireRelation;
 import com.infrastructure.Building;
 import com.infrastructure.Door;
-import com.messages.humanactor.HelloMessage;
 import com.messages.humanactor.HumanActorMessage;
 import com.messages.humanactor.MakeTurn;
 import com.models.HumanConfig;
@@ -73,15 +72,8 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     @Override
     public Receive<HumanActorMessage> createReceive() {
         return newReceiveBuilder()
-                .onMessage(HelloMessage.class, this::helloMessage)
                 .onMessage(MakeTurn.class, this::makeTurn)
                 .build();
-    }
-
-    public HumanActor helloMessage(HelloMessage message) {
-        logger.info("Hello actor: " + config.getName());
-        System.out.println("Hello from actor " + config.getName());
-        return this;
     }
 
     public HumanActor makeTurn(MakeTurn makeTurn) {
