@@ -160,43 +160,46 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         actualPosition = newPoint;
     }
 
-    private void move(Point destination) {
+    private Point moveOnX(Point destination) {
         Point newPoint;
         if(destination.getX() > actualPosition.getX()) {
             newPoint = actualPosition.right();
             if(getBuilding().isPointAvailable(newPoint)) {
-                trueMove(newPoint);
-                return;
-            } else if (getBuilding().isHumanThere(newPoint)) {
-                return;
+                return newPoint;
             }
-        }
-        if(destination.getX() < actualPosition.getX()) {
+        } else if(destination.getX() < actualPosition.getX()) {
             newPoint =  actualPosition.left();
             if(getBuilding().isPointAvailable(newPoint)) {
-                trueMove(newPoint);
-                return;
-            } else if (getBuilding().isHumanThere(newPoint)) {
-                return;
+                return newPoint;
             }
         }
+        return null;
+    }
+
+    private Point moveOnY(Point destination) {
+        Point newPoint;
         if(destination.getY() < actualPosition.getY()) {
             newPoint =  actualPosition.up();
             if(getBuilding().isPointAvailable(newPoint)) {
-                trueMove(newPoint);
-                return;
-            } else if (getBuilding().isHumanThere(newPoint)) {
-                return;
+                return newPoint;
             }
         }
         if(destination.getY() > actualPosition.getY()) {
             newPoint =  actualPosition.down();
             if(getBuilding().isPointAvailable(newPoint)) {
-                trueMove(newPoint);
-                return;
-            } else if (getBuilding().isHumanThere(newPoint)) {
-                return;
+                return newPoint;
             }
+        }
+        return null;
+    }
+
+    private void move(Point destination) {
+        Point newPoint = moveOnX(destination);
+        if(isNull(newPoint)) {
+            newPoint = moveOnY(destination);
+        }
+        if(nonNull(newPoint)) {
+            trueMove(newPoint);
         }
     }
 
