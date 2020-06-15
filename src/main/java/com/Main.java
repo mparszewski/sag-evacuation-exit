@@ -7,6 +7,8 @@ import com.messages.controller.MakeRound;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import java.io.File;
+
 import java.io.IOException;
 
 import static com.HumanActor.DELIMITER;
@@ -15,7 +17,8 @@ import static com.infrastructure.Fire.getFire;
 
 public class Main {
     public static void main(String[] args) {
-        PropertyConfigurator.configure("/home/mparszewski/IdeaProjects/sag-simulation/src/main/resources/log4j.properties");
+
+        PropertyConfigurator.configure(new File("src/main/resources/log4j.properties").getAbsolutePath());
         Logger logger = Logger.getLogger(Main.class);
 
         final int NUMBER_OF_ROUNDS = 10;
@@ -27,6 +30,7 @@ public class Main {
         logger.info("START");
 
         for (int i = 0; i < NUMBER_OF_ROUNDS; i++) {
+            logger.info("START of round " + (i + 1));
             actorSystem.tell(new MakeRound(i + 1));
 
             logger.info("ROUND" + DELIMITER + (i+1) + "\n" + getFire().getStringRepresentation());
@@ -41,7 +45,7 @@ public class Main {
 
         LogParser logParser = new LogParser();
         try {
-            logParser.parse(getBuilding().getAgents().size(), "/home/mparszewski/IdeaProjects/sag-simulation/src/main/resources/visualisation.csv");
+            logParser.parse(getBuilding().getAgents().size(), new File("src/main/resources/visualisation.csv").getAbsolutePath());
         } catch (IOException fnfe) {
             fnfe.printStackTrace();
         }

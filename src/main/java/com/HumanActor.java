@@ -40,6 +40,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     private Door strategy = null;
     private List<Door> checkedDoors = newArrayList();
     private static final Logger logger = Logger.getLogger(HumanActor.class);
+    private Point lastPosition;
 
     Predicate<DoorDistance> SIGNED_EXIT_PREDICATE = doorDistance ->
             getBuilding().getDoorTransferInGivenRoom(doorDistance.getDoor(),
@@ -91,7 +92,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         checkFire();
 
         if (getBuilding().getDoorByPoint(actualPosition) != null) {
-            //TODO: If in the doors currently - continue moving in opposite direction from which came.
+            moveInDoors();
         }
 
         strategy = getObviousStrategy();
@@ -165,6 +166,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
             Point newPoint = new Point(actualPosition.getX() + transformation.getX(),
                     actualPosition.getY() + transformation.getY());
             if (getBuilding().isPointAvailable(newPoint)) {
+                lastPosition = actualPosition;
                 actualPosition = newPoint;
                 vector.setX(vector.getX() - transformation.getX());
                 vector.setY(vector.getY() - transformation.getY());
@@ -178,5 +180,18 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
                 .filter(predicate)
                 .min(comparing(DoorDistance::getDistance))
                 .map(DoorDistance::getDoor);
+    }
+
+    private void moveInDoors() {
+        checkedDoors.add(getBuilding().getDoorByPoint(actualPosition));
+        if(actualPosition.getX() > lastPosition.getX() ) {
+            actualPosition.setX(actualPosition.getX() + 1);
+        } else if (actualPosition.getX() < lastPosition.getX()) {
+            actualPosition.setX(actualPosition.getX() - 1 );
+        } else if(actualPosition.getY() > lastPosition.getY() ) {
+            actualPosition.setY(actualPosition.getY() + 1);
+        } else if (actualPosition.getY() < lastPosition.getY()) {
+            actualPosition.setY(actualPosition.getY() - 1 );
+        }
     }
 }
