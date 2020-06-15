@@ -1,0 +1,52 @@
+START
+ROUND: 1| FIRE: (7, 14)
+Round: 1| actor: human-3| position: (4, 13)| mobility: NORMAL
+Round: 1| actor: human-1| position: (4, 12)| mobility: NORMAL
+Round: 1| actor: human-4| position: (4, 14)| mobility: NORMAL
+Round: 1| actor: human-2| position: (7, 10)| mobility: NORMAL
+ROUND: 2| FIRE: (7, 14), (8, 14), (6, 15)
+Round: 2| actor: human-2| position: (12, 10)| mobility: NORMAL
+Round: 2| actor: human-4| position: (4, 16)| mobility: NORMAL
+Round: 2| actor: human-3| position: (4, 19)| mobility: NORMAL
+Round: 2| actor: human-1| position: (4, 13)| mobility: NORMAL
+ROUND: 3| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14)
+Round: 3| actor: human-3| position: (4, 19)| mobility: NORMAL
+Round: 3| actor: human-2| position: (13, 12)| mobility: NORMAL
+Round: 3| actor: human-4| position: (4, 18)| mobility: NORMAL
+Round: 3| actor: human-1| position: (4, 13)| mobility: NORMAL
+ROUND: 4| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14), (9, 14)
+Round: 4| actor: human-4| position: (4, 18)| mobility: NORMAL
+Round: 4| actor: human-2| position: (16, 13)| mobility: NORMAL
+Round: 4| actor: human-3| position: (4, 19)| mobility: NORMAL
+Round: 4| actor: human-1| position: (4, 19)| mobility: NORMAL
+ROUND: 5| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14), (9, 14), (10, 14), (8, 15)
+Round: 5| actor: human-2| position: (16, 13)| mobility: NORMAL
+Round: 5| actor: human-4| position: (4, 19)| mobility: NORMAL
+Round: 5| actor: human-3| position: (4, 19)| mobility: NORMAL
+Round: 5| actor: human-1| position: (4, 19)| mobility: NORMAL
+ROUND: 6| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14), (9, 14), (10, 14), (8, 15), (9, 15)
+Round: 6| actor: human-3| position: (4, 19)| mobility: NORMAL
+Round: 6| actor: human-2| position: (18, 16)| mobility: NORMAL
+Round: 6| actor: human-4| position: (4, 19)| mobility: NORMAL
+Round: 6| actor: human-1| position: (4, 19)| mobility: NORMAL
+ROUND: 7| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14), (9, 14), (10, 14), (8, 15), (9, 15), (11, 14), (7, 16)
+Round: 7| actor: human-1| position: (4, 19)| mobility: NORMAL
+Round: 7| actor: human-4| position: (4, 19)| mobility: NORMAL
+Round: 7| actor: human-3| position: (4, 19)| mobility: NORMAL
+Round: 7| actor: human-2| position: (19, 17)| mobility: NORMAL
+ROUND: 8| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14), (9, 14), (10, 14), (8, 15), (9, 15), (11, 14), (7, 16), (8, 16), (10, 15)
+Round: 8| actor: human-4| position: (4, 19)| mobility: NORMAL
+Round: 8| actor: human-2| position: (19, 17)| mobility: NORMAL
+Round: 8| actor: human-1| position: (4, 19)| mobility: NORMAL
+Round: 8| actor: human-3| position: (4, 19)| mobility: NORMAL
+ROUND: 9| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14), (9, 14), (10, 14), (8, 15), (9, 15), (11, 14), (7, 16), (8, 16), (10, 15), (6, 17), (9, 16), (7, 17), (11, 15)
+Round: 9| actor: human-3| position: (4, 19)| mobility: NORMAL
+Round: 9| actor: human-1| position: (4, 19)| mobility: NORMAL
+Round: 9| actor: human-2| position: (19, 17)| mobility: NORMAL
+Round: 9| actor: human-4| position: (4, 19)| mobility: NORMAL
+ROUND: 10| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14), (9, 14), (10, 14), (8, 15), (9, 15), (11, 14), (7, 16), (8, 16), (10, 15), (6, 17), (9, 16), (7, 17), (11, 15), (6, 16), (8, 17), (6, 18), (12, 15), (10, 16)
+Round: 10| actor: human-1| position: (4, 19)| mobility: NORMAL
+Round: 10| actor: human-3| position: (4, 19)| mobility: NORMAL
+Round: 10| actor: human-2| position: (19, 19)| mobility: NORMAL
+Round: 10| actor: human-4| position: (4, 19)| mobility: NORMAL
+FINISH
