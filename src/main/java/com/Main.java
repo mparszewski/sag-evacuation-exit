@@ -30,7 +30,6 @@ public class Main {
         logger.info("START");
 
         for (int i = 0; i < NUMBER_OF_ROUNDS; i++) {
-            logger.info("START of round " + (i + 1));
             actorSystem.tell(new MakeRound(i + 1));
 
             logger.info("ROUND" + DELIMITER + (i+1) + "\n" + getFire().getStringRepresentation());
