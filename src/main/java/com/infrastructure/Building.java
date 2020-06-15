@@ -54,7 +54,7 @@ public class Building implements PointListing {
     private List<Obstruction> obstructions;
     private List<Point> agents;
 
-    public void updatePoint(Point oldPoint, Point newPoint) {
+    public synchronized void updatePoint(Point oldPoint, Point newPoint) {
         setAgents(agents.stream().map(point -> {
             if (point.equals(oldPoint)) {
                 return newPoint;
