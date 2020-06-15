@@ -21,8 +21,7 @@ import java.util.function.Predicate;
 
 import static com.enums.FireRelation.NEAR_FIRE;
 import static com.enums.FireRelation.ON_FIRE;
-import static com.enums.Mobility.CANT_MOVE;
-import static com.enums.Mobility.PANIC;
+import static com.enums.Mobility.*;
 import static com.enums.TransferType.DEADEND;
 import static com.enums.TransferType.EXIT_SIGNED;
 import static com.google.common.collect.Lists.newArrayList;
@@ -81,6 +80,9 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     }
 
     public HumanActor makeTurn(MakeTurn makeTurn) {
+        if(config.getMobility() == CANT_MOVE || config.getMobility() == SAFE) {
+            return this;
+        }
 
         checkFire();
 
@@ -136,18 +138,14 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     public void moveAccordingToStrategy() {
         Point vector = new Point(strategy.getStartPoint().getX() - actualPosition.getX(),
                 strategy.getStartPoint().getY() - actualPosition.getY());
-        if (config.getMobility() != CANT_MOVE) {
-            move(vector);
-        }
+        move(vector);
     }
 
     public void moveWithoutStrategy() {
         int divide = RandomUtil.getRandomValue(0, config.getSpeed());
         int x = config.getSpeed() - divide;
         Point vector = new Point(x, divide);
-        if (config.getMobility() != CANT_MOVE) {
-            move(vector);
-        }
+        move(vector);
     }
 
     private void move(Point vector) {
