@@ -12,15 +12,13 @@ import com.messages.humanactor.HumanActorMessage;
 import com.messages.humanactor.MakeTurn;
 import com.models.HumanConfig;
 import com.models.Point;
-import com.utility.RandomUtil;
 import org.apache.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static com.enums.FireRelation.NEAR_FIRE;
-import static com.enums.FireRelation.ON_FIRE;
+import static com.enums.FireRelation.*;
 import static com.enums.Mobility.*;
 import static com.enums.TransferType.DEADEND;
 import static com.enums.TransferType.EXIT_SIGNED;
@@ -128,6 +126,25 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
             config.setMobility(CANT_MOVE);
         } else if (fireRelation == NEAR_FIRE) {
             config.setHealth(config.getHealth() - 3);
+            moveToNonFirePoint();
+        }
+    }
+
+    private void moveToNonFirePoint() {
+        if (getBuilding().isPointAvailable(actualPosition.up())) {
+            trueMove(actualPosition.up());
+        }
+
+        if (getBuilding().isPointAvailable(actualPosition.down())) {
+            trueMove(actualPosition.down());
+        }
+
+        if (getBuilding().isPointAvailable(actualPosition.right())) {
+            trueMove(actualPosition.right());
+        }
+
+        if (getBuilding().isPointAvailable(actualPosition.left())) {
+            trueMove(actualPosition.left());
         }
     }
 
@@ -162,14 +179,14 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
 
     private Point moveOnX(Point destination) {
         Point newPoint;
-        if(destination.getX() > actualPosition.getX()) {
+        if (destination.getX() > actualPosition.getX()) {
             newPoint = actualPosition.right();
-            if(getBuilding().isPointAvailable(newPoint)) {
+            if (getBuilding().isPointAvailable(newPoint)) {
                 return newPoint;
             }
-        } else if(destination.getX() < actualPosition.getX()) {
-            newPoint =  actualPosition.left();
-            if(getBuilding().isPointAvailable(newPoint)) {
+        } else if (destination.getX() < actualPosition.getX()) {
+            newPoint = actualPosition.left();
+            if (getBuilding().isPointAvailable(newPoint)) {
                 return newPoint;
             }
         }
@@ -178,15 +195,15 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
 
     private Point moveOnY(Point destination) {
         Point newPoint;
-        if(destination.getY() < actualPosition.getY()) {
-            newPoint =  actualPosition.up();
-            if(getBuilding().isPointAvailable(newPoint)) {
+        if (destination.getY() < actualPosition.getY()) {
+            newPoint = actualPosition.up();
+            if (getBuilding().isPointAvailable(newPoint)) {
                 return newPoint;
             }
         }
-        if(destination.getY() > actualPosition.getY()) {
-            newPoint =  actualPosition.down();
-            if(getBuilding().isPointAvailable(newPoint)) {
+        if (destination.getY() > actualPosition.getY()) {
+            newPoint = actualPosition.down();
+            if (getBuilding().isPointAvailable(newPoint)) {
                 return newPoint;
             }
         }
@@ -195,10 +212,10 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
 
     private void move(Point destination) {
         Point newPoint = moveOnX(destination);
-        if(isNull(newPoint)) {
+        if (isNull(newPoint)) {
             newPoint = moveOnY(destination);
         }
-        if(nonNull(newPoint)) {
+        if (nonNull(newPoint)) {
             trueMove(newPoint);
         }
     }
@@ -224,7 +241,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
             newPoint = actualPosition.down();
         }
 
-        if(getBuilding().isPointAvailable(newPoint)) {
+        if (getBuilding().isPointAvailable(newPoint)) {
             trueMove(newPoint);
         }
     }
