@@ -18,7 +18,7 @@ test {
 dependencies {
     compile group: 'io.vavr', name: 'vavr', version: '0.9.0'
     compile group: 'com.google.guava', name: 'guava', version: '11.0.2'
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '2.0.0-alpha1'
+    compile group: 'log4j', name: 'log4j', version: '1.2.17'
     compile group: 'com.typesafe.akka', name: 'akka-actor_2.13', version: '2.6.6'
     compile group: 'com.typesafe.akka', name: 'akka-actor-typed_2.13', version: '2.6.6'
     compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.11.0'
