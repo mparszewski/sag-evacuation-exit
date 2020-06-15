@@ -34,6 +34,7 @@ import static java.util.Comparator.comparing;
 import static java.util.Objects.isNull;
 
 public class HumanActor extends AbstractBehavior<HumanActorMessage> {
+    public static final String DELIMITER = "%";
     private HumanConfig config;
     private Point actualPosition;
     private Door strategy = null;
@@ -103,8 +104,8 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         } else {
             moveAccordingToStrategy();
         }
-        logger.info("" + makeTurn.getNumberOfRound() + "| actor: " + this.config.getName() +
-                "| position: " + actualPosition.toString() + "| mobility: " + config.getMobility());
+        logger.info(makeTurn.getNumberOfRound() + DELIMITER + config.getName() +
+                DELIMITER + actualPosition.toString() + DELIMITER + config.getMobility());
         return this;
     }
 

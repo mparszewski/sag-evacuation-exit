@@ -1,52 +1,62 @@
 START
-ROUND: 1| FIRE: (7, 14)
-Round: 1| actor: human-3| position: (4, 13)| mobility: NORMAL
-Round: 1| actor: human-1| position: (4, 12)| mobility: NORMAL
-Round: 1| actor: human-4| position: (4, 14)| mobility: NORMAL
-Round: 1| actor: human-2| position: (7, 10)| mobility: NORMAL
-ROUND: 2| FIRE: (7, 14), (8, 14), (6, 15)
-Round: 2| actor: human-2| position: (12, 10)| mobility: NORMAL
-Round: 2| actor: human-4| position: (4, 16)| mobility: NORMAL
-Round: 2| actor: human-3| position: (4, 19)| mobility: NORMAL
-Round: 2| actor: human-1| position: (4, 13)| mobility: NORMAL
-ROUND: 3| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14)
-Round: 3| actor: human-3| position: (4, 19)| mobility: NORMAL
-Round: 3| actor: human-2| position: (13, 12)| mobility: NORMAL
-Round: 3| actor: human-4| position: (4, 18)| mobility: NORMAL
-Round: 3| actor: human-1| position: (4, 13)| mobility: NORMAL
-ROUND: 4| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14), (9, 14)
-Round: 4| actor: human-4| position: (4, 18)| mobility: NORMAL
-Round: 4| actor: human-2| position: (16, 13)| mobility: NORMAL
-Round: 4| actor: human-3| position: (4, 19)| mobility: NORMAL
-Round: 4| actor: human-1| position: (4, 19)| mobility: NORMAL
-ROUND: 5| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14), (9, 14), (10, 14), (8, 15)
-Round: 5| actor: human-2| position: (16, 13)| mobility: NORMAL
-Round: 5| actor: human-4| position: (4, 19)| mobility: NORMAL
-Round: 5| actor: human-3| position: (4, 19)| mobility: NORMAL
-Round: 5| actor: human-1| position: (4, 19)| mobility: NORMAL
-ROUND: 6| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14), (9, 14), (10, 14), (8, 15), (9, 15)
-Round: 6| actor: human-3| position: (4, 19)| mobility: NORMAL
-Round: 6| actor: human-2| position: (18, 16)| mobility: NORMAL
-Round: 6| actor: human-4| position: (4, 19)| mobility: NORMAL
-Round: 6| actor: human-1| position: (4, 19)| mobility: NORMAL
-ROUND: 7| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14), (9, 14), (10, 14), (8, 15), (9, 15), (11, 14), (7, 16)
-Round: 7| actor: human-1| position: (4, 19)| mobility: NORMAL
-Round: 7| actor: human-4| position: (4, 19)| mobility: NORMAL
-Round: 7| actor: human-3| position: (4, 19)| mobility: NORMAL
-Round: 7| actor: human-2| position: (19, 17)| mobility: NORMAL
-ROUND: 8| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14), (9, 14), (10, 14), (8, 15), (9, 15), (11, 14), (7, 16), (8, 16), (10, 15)
-Round: 8| actor: human-4| position: (4, 19)| mobility: NORMAL
-Round: 8| actor: human-2| position: (19, 17)| mobility: NORMAL
-Round: 8| actor: human-1| position: (4, 19)| mobility: NORMAL
-Round: 8| actor: human-3| position: (4, 19)| mobility: NORMAL
-ROUND: 9| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14), (9, 14), (10, 14), (8, 15), (9, 15), (11, 14), (7, 16), (8, 16), (10, 15), (6, 17), (9, 16), (7, 17), (11, 15)
-Round: 9| actor: human-3| position: (4, 19)| mobility: NORMAL
-Round: 9| actor: human-1| position: (4, 19)| mobility: NORMAL
-Round: 9| actor: human-2| position: (19, 17)| mobility: NORMAL
-Round: 9| actor: human-4| position: (4, 19)| mobility: NORMAL
-ROUND: 10| FIRE: (7, 14), (8, 14), (6, 15), (7, 15), (6, 14), (9, 14), (10, 14), (8, 15), (9, 15), (11, 14), (7, 16), (8, 16), (10, 15), (6, 17), (9, 16), (7, 17), (11, 15), (6, 16), (8, 17), (6, 18), (12, 15), (10, 16)
-Round: 10| actor: human-1| position: (4, 19)| mobility: NORMAL
-Round: 10| actor: human-3| position: (4, 19)| mobility: NORMAL
-Round: 10| actor: human-2| position: (19, 19)| mobility: NORMAL
-Round: 10| actor: human-4| position: (4, 19)| mobility: NORMAL
+ROUND%1
+(8, 18)
+1%human-2%(4, 11)%NORMAL
+1%human-1%(4, 8)%NORMAL
+1%human-4%(4, 15)%NORMAL
+1%human-3%(4, 12)%NORMAL
+ROUND%2
+(8, 18)
+2%human-3%(4, 14)%NORMAL
+2%human-1%(4, 10)%NORMAL
+2%human-2%(4, 11)%NORMAL
+2%human-4%(4, 15)%NORMAL
+ROUND%3
+(8, 18), (7, 19)
+3%human-1%(4, 10)%NORMAL
+3%human-3%(4, 14)%NORMAL
+3%human-2%(4, 13)%NORMAL
+3%human-4%(4, 15)%NORMAL
+ROUND%4
+(8, 18), (7, 19), (7, 18), (8, 19)
+4%human-1%(4, 12)%NORMAL
+4%human-2%(4, 13)%NORMAL
+4%human-3%(4, 16)%NORMAL
+4%human-4%(4, 18)%NORMAL
+ROUND%5
+(8, 18), (7, 19), (7, 18), (8, 19), (9, 18), (8, 17), (6, 19)
+5%human-2%(4, 15)%NORMAL
+5%human-1%(4, 12)%NORMAL
+5%human-3%(4, 18)%NORMAL
+5%human-4%(4, 18)%NORMAL
+ROUND%6
+(8, 18), (7, 19), (7, 18), (8, 19), (9, 18), (8, 17), (6, 19), (8, 16)
+6%human-2%(4, 17)%NORMAL
+6%human-1%(4, 12)%NORMAL
+6%human-3%(4, 18)%NORMAL
+6%human-4%(4, 19)%NORMAL
+ROUND%7
+(8, 18), (7, 19), (7, 18), (8, 19), (9, 18), (8, 17), (6, 19), (8, 16), (7, 17), (10, 18), (8, 15)
+7%human-2%(4, 19)%NORMAL
+7%human-1%(4, 12)%NORMAL
+7%human-3%(4, 18)%NORMAL
+7%human-4%(4, 19)%NORMAL
+ROUND%8
+(8, 18), (7, 19), (7, 18), (8, 19), (9, 18), (8, 17), (6, 19), (8, 16), (7, 17), (10, 18), (8, 15), (6, 18), (9, 17), (9, 16), (6, 17), (11, 18), (9, 19), (10, 17), (9, 15), (7, 16)
+8%human-1%(4, 14)%NORMAL
+8%human-2%(4, 19)%NORMAL
+8%human-3%(4, 18)%NORMAL
+8%human-4%(4, 19)%NORMAL
+ROUND%9
+(8, 18), (7, 19), (7, 18), (8, 19), (9, 18), (8, 17), (6, 19), (8, 16), (7, 17), (10, 18), (8, 15), (6, 18), (9, 17), (9, 16), (6, 17), (11, 18), (9, 19), (10, 17), (9, 15), (7, 16), (7, 15), (6, 16), (10, 19), (11, 17), (10, 16), (10, 15)
+9%human-4%(4, 19)%NORMAL
+9%human-3%(4, 19)%NORMAL
+9%human-2%(4, 19)%NORMAL
+9%human-1%(4, 14)%NORMAL
+ROUND%10
+(8, 18), (7, 19), (7, 18), (8, 19), (9, 18), (8, 17), (6, 19), (8, 16), (7, 17), (10, 18), (8, 15), (6, 18), (9, 17), (9, 16), (6, 17), (11, 18), (9, 19), (10, 17), (9, 15), (7, 16), (7, 15), (6, 16), (10, 19), (11, 17), (10, 16), (10, 15), (9, 14), (6, 15), (11, 16), (11, 15), (10, 14)
+10%human-4%(4, 19)%NORMAL
+10%human-2%(4, 19)%NORMAL
+10%human-3%(4, 19)%NORMAL
+10%human-1%(4, 14)%NORMAL
 FINISH
