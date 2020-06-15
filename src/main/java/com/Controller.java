@@ -53,7 +53,6 @@ public class Controller extends AbstractBehavior<ControllerMessage> {
     }
 
     public Controller makeRound(MakeRound makeRound) {
-        // TODO: Add fire spreading here
         Fire.getFire().spreadRandomly();
         listOfHelloActors.forEach(actorRef -> actorRef.tell(new MakeTurn(makeRound.getNumberOfRound())));
         return this;
