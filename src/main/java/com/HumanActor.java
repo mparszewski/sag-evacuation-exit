@@ -95,6 +95,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
                 return this;
             }
             moveInDoors();
+            return this;
         }
 
         strategy = getObviousStrategy();
@@ -189,15 +190,20 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     }
 
     private void moveInDoors() {
+        Point newPoint = actualPosition;
         checkedDoors.add(getBuilding().getDoorByPoint(actualPosition));
         if (actualPosition.getX() > lastPosition.getX()) {
-            actualPosition.setX(actualPosition.getX() + 1);
+            newPoint.setX(actualPosition.getX() + 1);
         } else if (actualPosition.getX() < lastPosition.getX()) {
-            actualPosition.setX(actualPosition.getX() - 1);
+            newPoint.setX(actualPosition.getX() - 1);
         } else if (actualPosition.getY() > lastPosition.getY()) {
-            actualPosition.setY(actualPosition.getY() + 1);
+            newPoint.setY(actualPosition.getY() + 1);
         } else if (actualPosition.getY() < lastPosition.getY()) {
-            actualPosition.setY(actualPosition.getY() - 1);
+            newPoint.setY(actualPosition.getY() - 1);
+        }
+        
+        if(getBuilding().isPointAvailable(newPoint)) {
+            actualPosition = newPoint;
         }
     }
 }
