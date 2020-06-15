@@ -11,6 +11,7 @@ import java.io.File;
 
 import java.io.IOException;
 
+import static com.HumanActor.DELIMITER;
 import static com.infrastructure.Building.getBuilding;
 import static com.infrastructure.Fire.getFire;
 
@@ -44,7 +45,7 @@ public class Main {
 
         LogParser logParser = new LogParser();
         try {
-            logParser.parse(getBuilding().getAgents().size(), "/home/mparszewski/IdeaProjects/sag-simulation/src/main/resources/visualisation.csv");
+            logParser.parse(getBuilding().getAgents().size(), new File("src/main/resources/visualisation.csv").getAbsolutePath());
         } catch (IOException fnfe) {
             fnfe.printStackTrace();
         }
