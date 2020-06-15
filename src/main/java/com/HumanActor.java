@@ -25,6 +25,7 @@ import static com.enums.TransferType.EXIT_SIGNED;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.infrastructure.Building.DoorDistance;
 import static com.infrastructure.Building.getBuilding;
+import static com.utility.RandomUtil.*;
 import static com.utility.RandomUtil.randomCheck;
 import static com.utility.Utils.SAFE_POINT;
 import static java.util.Comparator.comparing;
@@ -104,7 +105,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
             }
             moveAccordingToStrategy();
         } else {
-            moveAccordingToStrategy();
+            moveRandomly();
         }
         logPosition(makeTurn.getNumberOfRound());
         return this;
@@ -168,6 +169,18 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         Point destination = strategy.getStartPoint();
         for (int i = 0; i < config.getSpeed(); i++) {
             move(destination);
+        }
+    }
+
+    public void moveRandomly() {
+        for (int i = 1; i <= config.getSpeed(); i++) {
+            int chosenCoordinate = getRandomValue(0, 1);
+            int moveChange = getRandomValue(-1, 1);
+            if (chosenCoordinate == 0) {
+                move(new Point(actualPosition.getX() + moveChange, actualPosition.getY()));
+            } else  {
+                move(new Point(actualPosition.getX(), actualPosition.getY() + moveChange));
+            }
         }
     }
 
