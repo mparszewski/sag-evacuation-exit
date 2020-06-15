@@ -14,6 +14,7 @@ import com.messages.humanactor.MakeTurn;
 import com.models.HumanConfig;
 import com.models.Point;
 import com.utility.RandomUtil;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     private Point actualPosition;
     private Door strategy = null;
     private List<Door> checkedDoors = newArrayList();
+    private static final Logger logger = Logger.getLogger(HumanActor.class);
 
     Predicate<DoorDistance> SIGNED_EXIT_PREDICATE = doorDistance ->
             getBuilding().getDoorTransferInGivenRoom(doorDistance.getDoor(),
@@ -76,6 +78,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     }
 
     public HumanActor helloMessage(HelloMessage message) {
+        logger.info("Hello actor: " + config.getName());
         System.out.println("Hello from actor " + config.getName());
         return this;
     }

@@ -7,9 +7,12 @@ import com.messages.controller.CreateActor;
 import com.messages.controller.MakeRound;
 
 import static com.infrastructure.Building.getBuilding;
+import org.apache.log4j.PropertyConfigurator;
 
 public class Main {
     public static void main(String[] args) {
+        PropertyConfigurator.configure("/home/mparszewski/IdeaProjects/sag-simulation/src/main/resources/log4j.properties");
+
         final int NUMBER_OF_ROUNDS = 10;
 
         final ActorSystem<ControllerMessage> actorSystem = ActorSystem.create(Controller.create(), "Evacution_Simulator");
