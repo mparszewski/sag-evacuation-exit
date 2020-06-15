@@ -183,6 +183,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     }
 
     private void moveInDoors() {
+        checkedDoors.add(getBuilding().getDoorByPoint(actualPosition));
         if(actualPosition.getX() > lastPosition.getX() ) {
             actualPosition.setX(actualPosition.getX() + 1);
         } else if (actualPosition.getX() < lastPosition.getX()) {
