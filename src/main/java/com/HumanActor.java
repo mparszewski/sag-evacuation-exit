@@ -22,14 +22,14 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.enums.FireRelation.*;
+import static com.enums.FireRelation.NEAR_FIRE;
+import static com.enums.FireRelation.ON_FIRE;
 import static com.enums.Mobility.*;
 import static com.enums.TransferType.DEADEND;
 import static com.enums.TransferType.EXIT_SIGNED;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.infrastructure.Building.DoorDistance;
 import static com.infrastructure.Building.getBuilding;
-import static com.utility.RandomUtil.*;
 import static com.utility.RandomUtil.randomCheck;
 import static com.utility.Utils.SAFE_POINT;
 import static java.util.Comparator.comparing;
@@ -136,21 +136,15 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     }
 
     private void moveToNonFirePoint() {
-        if (getBuilding().isPointAvailable(actualPosition.up())) {
-            trueMove(actualPosition.up());
-        }
-
-        if (getBuilding().isPointAvailable(actualPosition.down())) {
-            trueMove(actualPosition.down());
-        }
-
-        if (getBuilding().isPointAvailable(actualPosition.right())) {
-            trueMove(actualPosition.right());
-        }
-
-        if (getBuilding().isPointAvailable(actualPosition.left())) {
-            trueMove(actualPosition.left());
-        }
+        Stream.of(Direction.values())
+                .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {
+                    Collections.shuffle(collected);
+                    return collected.stream();
+                }))
+                .map(this::mapDirectionToPoint)
+                .filter(getBuilding()::isPointAvailable)
+                .findFirst()
+                .ifPresent(this::trueMove);
     }
 
     private Door getObviousStrategy() {
@@ -178,15 +172,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
 
     public void moveRandomly() {
         for (int i = 1; i <= config.getSpeed(); i++) {
-            Stream.of(Direction.values())
-                    .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {
-                        Collections.shuffle(collected);
-                        return collected.stream();
-                    }))
-                    .map(this::mapDirectionToPoint)
-                    .filter(getBuilding()::isPointAvailable)
-                    .findFirst()
-                    .ifPresent(this::trueMove);
+            moveToNonFirePoint();
         }
     }
 
