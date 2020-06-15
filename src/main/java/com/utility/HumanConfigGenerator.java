@@ -14,6 +14,7 @@ public class HumanConfigGenerator {
                 .health(10)
                 .startingPoint(startingPoint)
                 .speed(RandomUtil.getRandomValue(1, 3))
+                .knowledge(4)
                 .reactionTime(6)
                 .vision(7)
                 .build();

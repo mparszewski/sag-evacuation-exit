@@ -34,7 +34,7 @@ public class Main {
 
             logger.info("ROUND" + DELIMITER + (i+1) + "\n" + getFire().getStringRepresentation());
             try {
-                Thread.sleep(100);
+                Thread.sleep(500);
             } catch (Exception e) {
             }
         }
