@@ -28,9 +28,11 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.infrastructure.Building.DoorDistance;
 import static com.infrastructure.Building.getBuilding;
 import static com.utility.RandomUtil.randomCheck;
+import static com.utility.Utils.SAFE_POINT;
 import static java.lang.Math.abs;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     public static final String DELIMITER = "%";
@@ -77,15 +79,21 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     }
 
     public HumanActor makeTurn(MakeTurn makeTurn) {
-        if(config.getMobility() == CANT_MOVE || config.getMobility() == SAFE) {
-            logger.info(makeTurn.getNumberOfRound() + DELIMITER + config.getName() +
-                    DELIMITER + actualPosition.toString() + DELIMITER + config.getMobility());
+        if (config.getMobility() == CANT_MOVE || config.getMobility() == SAFE) {
+            logPosition(makeTurn.getNumberOfRound());
             return this;
         }
 
         checkFire();
 
-        if (getBuilding().getDoorByPoint(actualPosition) != null) {
+        Door currentDoors = getBuilding().getDoorByPoint(actualPosition);
+        if (nonNull(currentDoors)) {
+            if (currentDoors.isExitDoor()) {
+                config.setMobility(SAFE);
+                actualPosition = SAFE_POINT;
+                logPosition(makeTurn.getNumberOfRound());
+                return this;
+            }
             moveInDoors();
         }
 
@@ -99,9 +107,13 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         } else {
             moveAccordingToStrategy();
         }
-        logger.info(makeTurn.getNumberOfRound() + DELIMITER + config.getName() +
-                DELIMITER + actualPosition.toString() + DELIMITER + config.getMobility());
+        logPosition(makeTurn.getNumberOfRound());
         return this;
+    }
+
+    private void logPosition(int roundNumber) {
+        logger.info(roundNumber + DELIMITER + config.getName() +
+                DELIMITER + actualPosition.toString() + DELIMITER + config.getMobility());
     }
 
     private void setPanic() {
@@ -178,14 +190,14 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
 
     private void moveInDoors() {
         checkedDoors.add(getBuilding().getDoorByPoint(actualPosition));
-        if(actualPosition.getX() > lastPosition.getX() ) {
+        if (actualPosition.getX() > lastPosition.getX()) {
             actualPosition.setX(actualPosition.getX() + 1);
         } else if (actualPosition.getX() < lastPosition.getX()) {
-            actualPosition.setX(actualPosition.getX() - 1 );
-        } else if(actualPosition.getY() > lastPosition.getY() ) {
+            actualPosition.setX(actualPosition.getX() - 1);
+        } else if (actualPosition.getY() > lastPosition.getY()) {
             actualPosition.setY(actualPosition.getY() + 1);
         } else if (actualPosition.getY() < lastPosition.getY()) {
-            actualPosition.setY(actualPosition.getY() - 1 );
+            actualPosition.setY(actualPosition.getY() - 1);
         }
     }
 }

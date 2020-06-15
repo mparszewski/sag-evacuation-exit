@@ -2,6 +2,7 @@ package com.infrastructure;
 
 import com.enums.Coordinates;
 import com.enums.Direction;
+import com.enums.TransferType;
 import com.google.common.collect.Maps;
 import com.models.Point;
 import io.vavr.API;
@@ -14,6 +15,8 @@ import java.util.Map;
 import static com.enums.Coordinates.*;
 import static com.enums.Direction.*;
 import static com.enums.Direction.*;
+import static com.enums.TransferType.EXIT_SIGNED;
+import static com.enums.TransferType.EXIT_UNSIGNED;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.*;
 import static io.vavr.API.$;
@@ -53,6 +56,11 @@ public class Door implements PointListing {
                 Case($(RIGHT), new Point(startX + capacity - 1, startY)),
                 Case($(), new Point(startX, startY))
         );
+    }
+
+    public boolean isExitDoor() {
+        TransferType type = this.getTransfers().get(0).getType();
+        return type == EXIT_SIGNED || type == EXIT_UNSIGNED;
     }
 
     @Override
