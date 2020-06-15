@@ -11,9 +11,13 @@ import static com.infrastructure.Building.getBuilding;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import java.io.File;
+import java.nio.file.Path;
+
 public class Main {
     public static void main(String[] args) {
-        PropertyConfigurator.configure("/home/mparszewski/IdeaProjects/sag-simulation/src/main/resources/log4j.properties");
+
+        PropertyConfigurator.configure(new File("src/main/resources/log4j.properties").getAbsolutePath());
         Logger logger = Logger.getLogger(Main.class);
 
         final int NUMBER_OF_ROUNDS = 10;
@@ -26,6 +30,7 @@ public class Main {
         actorSystem.tell(new CallAllActors()); //TODO: to be removed - just a test for actors existance
 
         for (int i = 0; i < NUMBER_OF_ROUNDS; i++) {
+            logger.info("START of round " + (i + 1));
             actorSystem.tell(new MakeRound(i + 1));
 
             try {
