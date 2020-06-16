@@ -21,7 +21,7 @@ public class Main {
         PropertyConfigurator.configure(new File("src/main/resources/log4j.properties").getAbsolutePath());
         Logger logger = Logger.getLogger(Main.class);
 
-        final int NUMBER_OF_ROUNDS = 10;
+        final int NUMBER_OF_ROUNDS = 20;
 
         final ActorSystem<ControllerMessage> actorSystem = ActorSystem.create(Controller.create(), "Evacution_Simulator");
 
@@ -34,7 +34,7 @@ public class Main {
 
             logger.info("ROUND" + DELIMITER + (i+1) + "\n" + getFire().getStringRepresentation());
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (Exception e) {
             }
         }

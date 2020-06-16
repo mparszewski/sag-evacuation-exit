@@ -131,7 +131,11 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
             config.setMobility(CANT_MOVE);
         } else if (fireRelation == NEAR_FIRE) {
             config.setHealth(config.getHealth() - 3);
-            moveToNonFirePoint();
+            if (config.getHealth() <= 0) {
+                config.setMobility(CANT_MOVE);
+            } else {
+                moveToNonFirePoint();
+            }
         }
     }
 
