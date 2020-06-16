@@ -21,10 +21,11 @@ public class Main {
         PropertyConfigurator.configure(new File("src/main/resources/log4j.properties").getAbsolutePath());
         Logger logger = Logger.getLogger(Main.class);
 
-        final int NUMBER_OF_ROUNDS = 20;
+        final int NUMBER_OF_ROUNDS = 40;
 
         final ActorSystem<ControllerMessage> actorSystem = ActorSystem.create(Controller.create(), "Evacution_Simulator");
 
+        int initialAgentsPool = getBuilding().getAgents().size();
         getBuilding().getAgents().forEach(agentStartingPoint -> actorSystem.tell(new CreateActor(agentStartingPoint)));
 
         logger.info("START");
@@ -34,7 +35,7 @@ public class Main {
 
             logger.info("ROUND" + DELIMITER + (i+1) + "\n" + getFire().getStringRepresentation());
             try {
-                Thread.sleep(1000);
+                Thread.sleep(250);
             } catch (Exception e) {
             }
         }
@@ -44,7 +45,7 @@ public class Main {
 
         LogParser logParser = new LogParser();
         try {
-            logParser.parse(getBuilding().getAgents().size(), new File("src/main/resources/visualisation.csv").getAbsolutePath());
+            logParser.parse(initialAgentsPool, new File("src/main/resources/visualisation.csv").getAbsolutePath());
         } catch (IOException fnfe) {
             fnfe.printStackTrace();
         }
