@@ -8,10 +8,8 @@ import com.models.Point;
 import io.vavr.collection.Stream;
 import lombok.*;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.SynchronousQueue;
 
 import static com.enums.Coordinates.X;
 import static com.enums.Coordinates.Y;
@@ -99,6 +97,9 @@ public class Building implements PointListing {
     }
 
     public InfrastructureElement getElementAtPoint(Point point) {
+        if (getAgents().contains(point)) {
+            return HUMAN;
+        }
         for (Door door : doors) {
             if (door.getPoints().contains(point)) {
                 return DOOR;
@@ -106,9 +107,6 @@ public class Building implements PointListing {
         }
         if (getPoints().contains(point)) {
             return WALL;
-        }
-        if (getAgents().contains(point)) {
-            return HUMAN;
         }
         if (getFire().getPoints().contains(point)) {
             return FIRE;

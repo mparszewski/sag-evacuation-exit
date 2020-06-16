@@ -37,7 +37,7 @@ public class Fire implements PointListing {
     @Getter(NONE)
     private final Consumer<Point> RANDOM_SPREAD = point -> {
         Stream.of(Direction.values())
-                .filter(d -> random() > 0.5)
+                .filter(d -> random() > 0.9)
                 .forEach(direction -> addPoint(point, direction));
     };
 

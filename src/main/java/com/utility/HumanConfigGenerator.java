@@ -16,7 +16,7 @@ public class HumanConfigGenerator {
                 .speed(RandomUtil.getRandomValue(1, 3))
                 .knowledge(4)
                 .reactionTime(6)
-                .vision(100)
+                .vision(RandomUtil.getRandomValue(8, 10))
                 .nervousness(RandomUtil.getRandomValue(0, 3))
                 .build();
     }
