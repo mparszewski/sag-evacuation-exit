@@ -10,8 +10,10 @@ import com.infrastructure.Fire;
 import com.messages.controller.ControllerMessage;
 import com.messages.controller.CreateActor;
 import com.messages.controller.MakeRound;
+import com.messages.controller.SwapInDoors;
 import com.messages.humanactor.HumanActorMessage;
 import com.messages.humanactor.MakeTurn;
+import com.models.Point;
 import com.utility.HumanConfigGenerator;
 
 import java.util.List;

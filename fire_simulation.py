@@ -7,7 +7,7 @@ Created on Sat Jun 1 21:33:40 2020
 """
 
 from matplotlib.backends.backend_tkagg import (
-    FigureCanvasTkAgg, NavigationToolbar2TkAgg)
+    FigureCanvasTkAgg, NavigationToolbar2Tk)
 import matplotlib
 from matplotlib.figure import Figure
 from matplotlib import pyplot as plt
@@ -115,14 +115,14 @@ class View:
         #rysownaie drzwi
         #id=1
         ly5 = [0,1,1,0,0] 
-        lx5 = [9,9,11,11,9]
+        lx5 = [9,9,10,10,9]
         plt.plot(lx5,ly5,color=exit_door_color,linewidth=thick,zorder=5)
         #id=2
         ly6 = [9,10,10,9,9] 
         lx6 = [5,5,6,6,5]
         plt.plot(lx6,ly6,color=door_color,linewidth=thick,zorder=5)
         #id=3
-        ly7 = [15,17,17,15,15] 
+        ly7 = [15,16,16,15,15]
         lx7 = [12,12,13,13,12]
         plt.plot(lx7,ly7,color=door_color,linewidth=thick,zorder=5)
         #id=4
@@ -148,7 +148,7 @@ class View:
         self.canvas.get_tk_widget().grid(row=1,column=1) 
         self.toolbar_frame = Frame(self.master)
         self.toolbar_frame.grid(row=2,column=3)
-        self.toolbar = NavigationToolbar2TkAgg(self.canvas,self.toolbar_frame)
+        self.toolbar = NavigationToolbar2Tk(self.canvas,self.toolbar_frame)
         self.toolbar.config(bg=COLOR_GREEN)
         self.toolbar.update()           
 
@@ -177,7 +177,7 @@ class View:
         self.label_4.pack()
         
     def load_simulation_data(self):
-        self.my_data = genfromtxt("C:/Users/molly/Desktop/pajtung/visualisation(3).csv", delimiter='.',dtype=str)
+        self.my_data = genfromtxt("src/main/resources/visualisation.csv", delimiter='.',dtype=str)
 #        print(self.my_data[1,1])
 #        print(self.my_data.shape[0])
         xs=[]
@@ -243,17 +243,21 @@ class View:
         g = 0
         h=0
         j=0
+        k=0
         for x in self.sval:
             g=0
             h=0
             j=0
+            k=0
             for z in x:
                 if(z=='NORMAL'):
                     g+=1
                 elif(z=='SAFE'):
                     h+=1
                 elif(z=='CANT_MOVE'):
-                    j+=1   
+                    j+=1
+                elif(k=='PANIC'):
+                    k+=1
             self.nr_normal.append(g)
             self.nr_safe.append(h)
             self.nr_cantmove.append(j)
@@ -266,8 +270,11 @@ class View:
                     h+=1
                     self.sval[x,y]='purple'
                 elif(self.sval[x,y]=='CANT_MOVE'):
-                    j+=1   
+                    j+=1
                     self.sval[x,y]='red'
+                elif(self.sval[x,y]=='PANIC'):
+                    k+=1
+                    self.sval[x,y]='yellow'
         self.xval=np.add(self.xval,0.5)
         self.yval=np.add(self.yval,0.5)
         

@@ -17,6 +17,14 @@ agents:
     y: 17
   - x: 9
     y: 4
+  - x: 18
+    y: 18
+  - x: 2
+    y: 18
+  - x: 14
+    y: 16
+  - x: 12
+    y: 11
 rooms:
   - startX: 0
     startY: 0
@@ -68,7 +76,7 @@ doors:
   - startX: 12
     startY: 15
     direction: DOWN
-    capacity: 2
+    capacity: 1
     id: 3
     transfers:
       - type: TRANSITION

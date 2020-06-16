@@ -7,12 +7,15 @@ import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 import com.enums.Direction;
 import com.enums.FireRelation;
+import com.enums.InfrastructureElement;
 import com.infrastructure.Building;
 import com.infrastructure.Door;
+import com.infrastructure.Fire;
 import com.messages.humanactor.HumanActorMessage;
 import com.messages.humanactor.MakeTurn;
 import com.models.HumanConfig;
 import com.models.Point;
+import com.utility.RandomUtil;
 import org.apache.log4j.Logger;
 
 import java.util.Collections;
@@ -24,6 +27,7 @@ import java.util.stream.Stream;
 
 import static com.enums.FireRelation.NEAR_FIRE;
 import static com.enums.FireRelation.ON_FIRE;
+import static com.enums.InfrastructureElement.*;
 import static com.enums.Mobility.*;
 import static com.enums.TransferType.DEADEND;
 import static com.enums.TransferType.EXIT_SIGNED;
@@ -92,7 +96,9 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         if (nonNull(currentDoors)) {
             if (currentDoors.isExitDoor()) {
                 config.setMobility(SAFE);
-                getBuilding().getAgents().remove(actualPosition);
+                while (getBuilding().getAgents().contains(actualPosition)) {
+                    getBuilding().getAgents().remove(actualPosition);
+                }
                 actualPosition = SAFE_POINT;
                 getBuilding().updatePoint(actualPosition, SAFE_POINT);
                 logPosition(makeTurn.getNumberOfRound());
@@ -149,6 +155,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
                 }))
                 .map(this::mapDirectionToPoint)
                 .filter(getBuilding()::isPointAvailable)
+                .filter(point -> point != lastPosition)
                 .findFirst()
                 .ifPresent(this::trueMove);
     }
@@ -173,12 +180,30 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         Point destination = strategy.getStartPoint();
         for (int i = 0; i < config.getSpeed(); i++) {
             move(destination);
+            checkMoveInDoors();
         }
     }
 
     public void moveRandomly() {
         for (int i = 1; i <= config.getSpeed(); i++) {
             moveToNonFirePoint();
+            checkMoveInDoors();
+        }
+    }
+
+    private void checkMoveInDoors() {
+        Door currentDoors = getBuilding().getDoorByPoint(actualPosition);
+        if (nonNull(currentDoors)) {
+            if (currentDoors.isExitDoor()) {
+                config.setMobility(SAFE);
+                while (getBuilding().getAgents().contains(actualPosition)) {
+                    getBuilding().getAgents().remove(actualPosition);
+                }
+                actualPosition = SAFE_POINT;
+                getBuilding().updatePoint(actualPosition, SAFE_POINT);
+            }
+            moveInDoors();
+            strategy = getObviousStrategy();
         }
     }
 
@@ -237,13 +262,24 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
     }
 
     private void move(Point destination) {
-        Point newPoint = moveOnX(destination);
-        if (isNull(newPoint)) {
-            newPoint = moveOnY(destination);
+        if (RandomUtil.randomCheck(5)) {
+            Point newPoint = moveOnX(destination);
+            if (isNull(newPoint)) {
+                newPoint = moveOnY(destination);
+            }
+            if (nonNull(newPoint)) {
+                trueMove(newPoint);
+            }
+        } else {
+            Point newPoint = moveOnY(destination);
+            if (isNull(newPoint)) {
+                newPoint = moveOnX(destination);
+            }
+            if (nonNull(newPoint)) {
+                trueMove(newPoint);
+            }
         }
-        if (nonNull(newPoint)) {
-            trueMove(newPoint);
-        }
+
     }
 
     private Optional<Door> getVisibleDoorsWithFilteredTransfers(Predicate<DoorDistance> predicate) {
@@ -262,13 +298,15 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         } else if (actualPosition.getX() < lastPosition.getX()) {
             newPoint = actualPosition.left();
         } else if (actualPosition.getY() > lastPosition.getY()) {
-            newPoint = actualPosition.up();
-        } else if (actualPosition.getY() < lastPosition.getY()) {
             newPoint = actualPosition.down();
+        } else if (actualPosition.getY() < lastPosition.getY()) {
+            newPoint = actualPosition.up();
         }
 
         if (getBuilding().isPointAvailable(newPoint)) {
             trueMove(newPoint);
+        } else if (getBuilding().isHumanThere(newPoint)) {
+            trueMove(lastPosition);
         }
     }
 }
