@@ -107,9 +107,9 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
             if (statCheck(config.getNervousness())) {
                 setPanic();
             }
-            moveAccordingToStrategy();
-        } else {
             moveRandomly();
+        } else {
+            moveAccordingToStrategy();
         }
         logPosition(makeTurn.getNumberOfRound());
         return this;
