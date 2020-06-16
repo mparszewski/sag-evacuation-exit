@@ -5,6 +5,7 @@ import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
+import com.enums.Direction;
 import com.enums.FireRelation;
 import com.infrastructure.Building;
 import com.infrastructure.Door;
@@ -14,11 +15,15 @@ import com.models.HumanConfig;
 import com.models.Point;
 import org.apache.log4j.Logger;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static com.enums.FireRelation.*;
+import static com.enums.FireRelation.NEAR_FIRE;
+import static com.enums.FireRelation.ON_FIRE;
 import static com.enums.Mobility.*;
 import static com.enums.TransferType.DEADEND;
 import static com.enums.TransferType.EXIT_SIGNED;
@@ -102,7 +107,7 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
             if (statCheck(config.getNervousness())) {
                 setPanic();
             }
-            moveAccordingToStrategy();
+            moveRandomly();
         } else {
             moveAccordingToStrategy();
         }
@@ -126,26 +131,24 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
             config.setMobility(CANT_MOVE);
         } else if (fireRelation == NEAR_FIRE) {
             config.setHealth(config.getHealth() - 3);
-            moveToNonFirePoint();
+            if (config.getHealth() <= 0) {
+                config.setMobility(CANT_MOVE);
+            } else {
+                moveToNonFirePoint();
+            }
         }
     }
 
     private void moveToNonFirePoint() {
-        if (getBuilding().isPointAvailable(actualPosition.up())) {
-            trueMove(actualPosition.up());
-        }
-
-        if (getBuilding().isPointAvailable(actualPosition.down())) {
-            trueMove(actualPosition.down());
-        }
-
-        if (getBuilding().isPointAvailable(actualPosition.right())) {
-            trueMove(actualPosition.right());
-        }
-
-        if (getBuilding().isPointAvailable(actualPosition.left())) {
-            trueMove(actualPosition.left());
-        }
+        Stream.of(Direction.values())
+                .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {
+                    Collections.shuffle(collected);
+                    return collected.stream();
+                }))
+                .map(this::mapDirectionToPoint)
+                .filter(getBuilding()::isPointAvailable)
+                .findFirst()
+                .ifPresent(this::trueMove);
     }
 
     private Door getObviousStrategy() {
@@ -168,6 +171,27 @@ public class HumanActor extends AbstractBehavior<HumanActorMessage> {
         Point destination = strategy.getStartPoint();
         for (int i = 0; i < config.getSpeed(); i++) {
             move(destination);
+        }
+    }
+
+    public void moveRandomly() {
+        for (int i = 1; i <= config.getSpeed(); i++) {
+            moveToNonFirePoint();
+        }
+    }
+
+    private Point mapDirectionToPoint(Direction direction) {
+        switch (direction) {
+            case UP:
+                return actualPosition.up();
+            case DOWN:
+                return actualPosition.down();
+            case RIGHT:
+                return actualPosition.right();
+            case LEFT:
+                return actualPosition.left();
+            default:
+                return null;
         }
     }
 

@@ -61,7 +61,7 @@ public class Fire implements PointListing {
                 Case($(RIGHT), new Point(point.getX() - 1, point.getY() + 1)),
                 Case($(), point)
         );
-        if (getBuilding().isPointAvailable(newPoint)) {
+        if (getBuilding().isAvailableForFire(newPoint)) {
             allPoints.add(newPoint);
         }
     }

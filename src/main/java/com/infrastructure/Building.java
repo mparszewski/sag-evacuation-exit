@@ -72,12 +72,16 @@ public class Building implements PointListing {
         return new Point(endX, endY);
     }
 
-    public boolean isPointAvailable(Point point) {
-        if(checkIfOnFire(point) == ON_FIRE || checkIfOnFire(point) == NEAR_FIRE) {
-            return false;
-        }
+    public boolean isAvailableForFire(Point point) {
         InfrastructureElement element = getElementAtPoint(point);
         return FLOOR == element || WINDOW == element || DOOR == element;
+    }
+
+    public boolean isPointAvailable(Point point) {
+        if (checkIfOnFire(point) == ON_FIRE || checkIfOnFire(point) == NEAR_FIRE) {
+            return false;
+        }
+        return isAvailableForFire(point);
     }
 
     public boolean isHumanThere(Point point) {
