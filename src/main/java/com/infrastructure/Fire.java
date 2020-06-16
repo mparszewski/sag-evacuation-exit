@@ -27,7 +27,8 @@ public class Fire implements PointListing {
     private CopyOnWriteArrayList<Point> allPoints;
 
     private Fire() {
-        startPoint = getBuilding().getRandomAvailablePoint();
+//        startPoint = getBuilding().getRandomAvailablePoint();
+        startPoint = new Point(16, 7);
         allPoints = new CopyOnWriteArrayList<>();
         allPoints.add(startPoint);
     }
@@ -37,7 +38,7 @@ public class Fire implements PointListing {
     @Getter(NONE)
     private final Consumer<Point> RANDOM_SPREAD = point -> {
         Stream.of(Direction.values())
-                .filter(d -> random() > 0.9)
+                .filter(d -> random() > 0.8)
                 .forEach(direction -> addPoint(point, direction));
     };
 
