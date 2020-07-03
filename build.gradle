@@ -33,4 +33,30 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
+class Greeting extends DefaultTask {
+    String message
+    String recipient
+
+    @TaskAction
+    void sayGreeting() {
+        println("${message}, ${recipient}!")
+    }
+}
+
+tasks.register("hello", Greeting) {
+    group('Welcome')
+    description('Produces a greetings to Unknown User')
+    message = 'Hello'
+    recipient = 'Unknown'
+}
+
+task runPythonVisualisation(type: Exec) {
+    group('visualisation')
+    description('Launches python visualisation application')
+    workingDir('./')
+    commandLine 'python3', 'fire_simulation.py'
+}
+
+run.finalizedBy(runPythonVisualisation)
+
 mainClassName = 'com.Main'

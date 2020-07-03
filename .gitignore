@@ -1,2 +1,4 @@
 .gradle
 /build/
+logs.log
+src/main/resources/visualisation.csv
