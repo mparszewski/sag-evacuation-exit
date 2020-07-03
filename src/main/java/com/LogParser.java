@@ -34,9 +34,6 @@ public class LogParser {
             }
         }
 
-        fireEntries.forEach(System.out::println);
-
-
         FileWriter writer = new FileWriter(pathToSave);
         StringBuilder builder = new StringBuilder("nr_rundy");
         for (int i = 1; i <= numberOfActors; i++) {

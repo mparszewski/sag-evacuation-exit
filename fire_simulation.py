@@ -33,7 +33,7 @@ class View:
         self.master.title(PROGRAM_NAME)
         self.master.configure(bg=COLOR_GREEN)
         self.master.geometry(PROGRAM_SIZE)
-         
+
     def close_window(self):
         self.master.quit()
         self.master.destroy()

@@ -51,12 +51,19 @@ tasks.register("hello", Greeting) {
 }
 
 task runPythonVisualisation(type: Exec) {
-    group('visualisation')
+    group('Visualisation')
     description('Launches python visualisation application')
     workingDir('./')
     commandLine 'python3', 'fire_simulation.py'
 }
 
-run.finalizedBy(runPythonVisualisation)
+task runThreeJSVisualisation(type: Exec) {
+    group('Visualisation')
+    description('Launches ThreeJS visualisation on node.js server')
+    workingDir('visualisation_threeJS')
+    commandLine 'node', 'index.js'
+}
+
+run.finalizedBy(runThreeJSVisualisation)
 
 mainClassName = 'com.Main'
