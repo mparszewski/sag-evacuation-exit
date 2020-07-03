@@ -27,8 +27,7 @@ public class Fire implements PointListing {
     private CopyOnWriteArrayList<Point> allPoints;
 
     private Fire() {
-//        startPoint = getBuilding().getRandomAvailablePoint();
-        startPoint = new Point(16, 7);
+        startPoint = getBuilding().getRandomAvailablePoint();
         allPoints = new CopyOnWriteArrayList<>();
         allPoints.add(startPoint);
     }
