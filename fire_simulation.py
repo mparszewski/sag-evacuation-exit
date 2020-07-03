@@ -1,26 +1,12 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Jun 1 21:33:40 2020
-
-@author: Maria Skarbek
-
-"""
-
-from matplotlib.backends.backend_tkagg import (
-    FigureCanvasTkAgg, NavigationToolbar2Tk)
-import matplotlib
-from matplotlib.figure import Figure
-from matplotlib import pyplot as plt
-import numpy as np
-from numpy import genfromtxt
 from tkinter import *
-from tkinter import messagebox
-import os
+
 import matplotlib.animation as animation
 import matplotlib.ticker as ticker
-import pandas as pd
-
-
+import numpy as np
+from matplotlib import pyplot as plt
+from matplotlib.backends.backend_tkagg import (
+    FigureCanvasTkAgg, NavigationToolbar2Tk)
+from numpy import genfromtxt
 
 #View
 PROGRAM_NAME = ' SAG simulation '
